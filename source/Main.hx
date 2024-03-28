@@ -4,7 +4,7 @@ package;
 import android.content.Context;
 #end
 
-import debug.FPSCounter;
+import debug.FramerateCounter;
 
 import flixel.graphics.FlxGraphic;
 import flixel.FlxGame;
@@ -48,7 +48,7 @@ class Main extends Sprite
 		startFullscreen: false // if the game should start at fullscreen mode
 	};
 
-	public static var fpsVar:FPSCounter;
+	public static var fpsVar:FramerateCounter;
 
 	// You can pretty much ignore everything from here on - your code should go in your states.
 
@@ -76,6 +76,9 @@ class Main extends Sprite
 		{
 			addEventListener(Event.ADDED_TO_STAGE, init);
 		}
+		#if VIDEOS_ALLOWED
+		hxvlc.util.Handle.init();
+		#end
 	}
 
 	private function init(?E:Event):Void
@@ -109,13 +112,15 @@ class Main extends Sprite
 		addChild(new FlxGame(game.width, game.height, game.initialState, #if (flixel < "5.0.0") game.zoom, #end game.framerate, game.framerate, game.skipSplash, game.startFullscreen));
 
 		#if !mobile
-		fpsVar = new FPSCounter(10, 3, 0xFFFFFF);
+		fpsVar = new FramerateCounter(10, 3, 0xFFFFFF);
 		addChild(fpsVar);
 		Lib.current.stage.align = "tl";
 		Lib.current.stage.scaleMode = StageScaleMode.NO_SCALE;
-		if(fpsVar != null) {
-			fpsVar.visible = ClientPrefs.data.showFPS;
-		}
+		
+		fpsVar.showFPS = ClientPrefs.data.showFPS;
+		fpsVar.showMem = ClientPrefs.data.showMem;
+		fpsVar.showMemPeak = ClientPrefs.data.showMemPeak;
+		fpsVar.showBuild = ClientPrefs.data.showBuild;
 		#end
 
 		#if linux

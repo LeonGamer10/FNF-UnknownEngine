@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=UnknownEngine
+Comment=A terribly modified moddable desktop port of Friday Night Funkin'
+Icon=io.github.leongamer10.fnf-unknownengine
+Exec=UnknownEngine
+Categories=Game

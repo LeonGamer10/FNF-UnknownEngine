@@ -12,6 +12,9 @@ import states.TitleState;
 	public var middleScroll:Bool = false;
 	public var opponentStrums:Bool = true;
 	public var showFPS:Bool = true;
+	public var showMem:Bool = true;
+	public var showMemPeak:Bool = true;
+	public var showBuild:Bool = true;
 	public var flashing:Bool = true;
 	public var autoPause:Bool = true;
 	public var antialiasing:Bool = true;
@@ -24,6 +27,7 @@ import states.TitleState;
 	public var framerate:Int = 60;
 	public var camZooms:Bool = true;
 	public var hideHud:Bool = false;
+	public var charIcons:Bool = true;
 	public var noteOffset:Int = 0;
 	public var arrowRGB:Array<Array<FlxColor>> = [
 		[0xFFC24B99, 0xFFFFFFFF, 0xFF3C1F56],
@@ -36,11 +40,18 @@ import states.TitleState;
 		[0xFF71E300, 0xFFF6FFE6, 0xFF003100],
 		[0xFFFF884E, 0xFFFFFAF5, 0xFF6C0000]];
 
+	public var laneUnderlayOpacity:Float = 0;
+	public var colorblindMode:String = 'None';
 	public var ghostTapping:Bool = true;
-	public var timeBarType:String = 'Time Left';
+	public var timeBarType:String = 'Elapsed / Length';
+	public var timeBarColor:String = 'Unknown';	
 	public var scoreZoom:Bool = true;
+	public var judgeZoom:Bool = true;
+	public var timeZoom:Bool = true;
 	public var noReset:Bool = false;
 	public var healthBarAlpha:Float = 1;
+	public var coloredHealthBar:Bool = true;
+	public var stripedBar:Bool = false;
 	public var hitsoundVolume:Float = 0;
 	public var pauseMusic:String = 'Tea Time';
 	public var checkForUpdates:Bool = true;
@@ -75,6 +86,9 @@ import states.TitleState;
 	public var safeFrames:Float = 10;
 	public var guitarHeroSustains:Bool = true;
 	public var discordRPC:Bool = true;
+	public var loadingScreen:Bool = true;
+	public var language:String = 'en-US';
+	public var vocalResyncIndicator:Bool = false;
 }
 
 class ClientPrefs {
@@ -175,8 +189,12 @@ class ClientPrefs {
 			if (key != 'gameplaySettings' && Reflect.hasField(FlxG.save.data, key))
 				Reflect.setField(data, key, Reflect.field(FlxG.save.data, key));
 		
-		if(Main.fpsVar != null)
-			Main.fpsVar.visible = data.showFPS;
+		if(Main.fpsVar != null) {
+			Main.fpsVar.showFPS = data.showFPS;
+			Main.fpsVar.showMem = data.showMem;
+			Main.fpsVar.showMemPeak = data.showMemPeak;
+			Main.fpsVar.showBuild = data.showBuild;
+		}
 
 		#if (!html5 && !switch)
 		FlxG.autoPause = ClientPrefs.data.autoPause;
@@ -211,9 +229,7 @@ class ClientPrefs {
 		if (FlxG.save.data.mute != null)
 			FlxG.sound.muted = FlxG.save.data.mute;
 
-		#if DISCORD_ALLOWED
-		DiscordClient.check();
-		#end
+		#if DISCORD_ALLOWED DiscordClient.check(); #end
 
 		// controls on a separate save file
 		var save:FlxSave = new FlxSave();
