@@ -31,6 +31,18 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 			'ghostTapping',
 			BOOL);
 		addOption(option);
+
+		var option:Option = new Option('Judgement Counter',
+			"If unchecked, the judgement counter gets hidden.",
+			'judgementCounter',
+			BOOL);
+		addOption(option);
+		
+		var option:Option = new Option('Display MS Offset on Note Hits',
+			'If checked, an offset (in milliseconds) will appear near notes.',
+			'showMsText',
+			BOOL);
+		addOption(option);
 		
 		var option:Option = new Option('Auto Pause',
 			"If checked, the game automatically pauses if the screen isn't on focus.",
@@ -66,8 +78,18 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 		option.minValue = -30;
 		option.maxValue = 30;
 		addOption(option);
+		
+		var option:Option = new Option('Perfect Hit Window',
+			'Changes the amount of time you have\nfor hitting a "Perfect!" in milliseconds.',
+			'perfectWindow',
+			INT);
+		option.displayFormat = '%vms';
+		option.scrollSpeed = 15;
+		option.minValue = 10;
+		option.maxValue = 20;
+		addOption(option);
 
-		var option:Option = new Option('Sick! Hit Window',
+		var option:Option = new Option('Sick Hit Window',
 			'Changes the amount of time you have\nfor hitting a "Sick!" in milliseconds.',
 			'sickWindow',
 			INT);

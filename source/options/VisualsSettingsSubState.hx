@@ -106,6 +106,12 @@ class VisualsSettingsSubState extends BaseOptionsMenu
 			'flashing',
 			BOOL);
 		addOption(option);
+
+		var option:Option = new Option('Now Playing Bar',
+			"If checked, shows a bar at the top left containing the song's name.",
+			'playingBar',
+			BOOL);
+		addOption(option);
 		
 		var option:Option = new Option('Color Filters:',
 			"Change how colors of the game work, either for fun or if you're colorblind.",
