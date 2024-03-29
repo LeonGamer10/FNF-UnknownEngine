@@ -303,7 +303,8 @@ class TitleState extends MusicBeatState
 		psychSpr = new FlxSprite(0, FlxG.height * 0.4).loadGraphic(Paths.image('loading_screen/logo'));
 		add(psychSpr);
 		psychSpr.visible = false;
-		psychSpr.setGraphicSize(Std.int(psychSpr.width * 0.55));
+		psychSpr.scale.x = 0.4;
+		psychSpr.scale.y = 0.4;
 		psychSpr.updateHitbox();
 		psychSpr.screenCenter(X);
 		psychSpr.antialiasing = ClientPrefs.data.antialiasing;
@@ -583,7 +584,7 @@ class TitleState extends MusicBeatState
 				case 8:
 					psychSpr.y = 750;
 					psychSpr.visible = true;
-					FlxTween.tween(psychSpr, {y: 0}, 0.5, {ease: FlxEase.expoOut});
+					FlxTween.tween(psychSpr, {y: 325}, 0.5, {ease: FlxEase.expoOut});
 				case 9:
 					deleteCoolText();
 					psychSpr.visible = false;
