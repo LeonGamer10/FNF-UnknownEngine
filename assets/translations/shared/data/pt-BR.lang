@@ -4,7 +4,7 @@ Português (Brasil)
 score_text: "Pontos: {1} | Erros: {2} | Saúde: {3} | Precisão: {4}"
 score_text_instakill: "Pontos: {1} | Mortes: {2} | Saúde: {3} | Precisão: {4}"
 botplay: "A jogabilidade é automática. Sua pontuação não será salva."
-judgement_counter: "NPS: {1} (Máxima: {2})\nCombo Máxima: {3}\nPerfects: {4}\nSicks: {5}\nGoods: {6}\nBads: {7}\nShits: {8}\nMédia: {9}\nAvaliação: {10}"
+judgement_counter: "NPS: {1} (Máximo: {2})\nCombo Máximo: {3}\nPerfects: {4}\nSicks: {5}\nGoods: {6}\nBads: {7}\nShits: {8}\nMédia: {9}\nAvaliação: {10}"
 
 rating_uninstall: "Desinstalar"
 rating_shit: "F"
@@ -300,6 +300,9 @@ description_vocal_resync_indicator: "Se checado, vai ativar um indicador para o 
 
 // Loading Screen
 now_loading: "Carregando{1}"
+
+// Now Playing Bar
+now_playing: "Agora Jogando:"
 
 // Difficulties
 difficulty_easy: "Fácil"

@@ -682,7 +682,7 @@ class PlayState extends MusicBeatState
 		playingBox.visible = ClientPrefs.data.playingBar;
 		songBoxGroup.add(playingBox);
 	
-		playingText = new FlxText(-290, 30, FlxG.width, "Now Playing:", 300);
+		playingText = new FlxText(-290, 30, FlxG.width, Language.getPhrase('now_playing', 'Now Playing:'), 300);
 		playingText.setFormat(Paths.font("vcr.ttf"), 25, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		playingText.visible = ClientPrefs.data.playingBar;
 		songBoxGroup.add(playingText);
