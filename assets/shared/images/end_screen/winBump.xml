@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="win.png">
+	<!-- Created with Adobe Animate version 20.0.3.25487 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="win!0000" x="0" y="0" width="176" height="71" frameX="-273" frameY="-109" frameWidth="723" frameHeight="289"/>
+	<SubTexture name="win!0001" x="176" y="0" width="334" height="134" frameX="-194" frameY="-77" frameWidth="723" frameHeight="289"/>
+	<SubTexture name="win!0002" x="510" y="0" width="723" height="289"/>
+	<SubTexture name="win!0003" x="510" y="0" width="723" height="289"/>
+	<SubTexture name="win!0004" x="1233" y="0" width="664" height="267" frameX="-29" frameY="-11" frameWidth="723" frameHeight="289"/>
+	<SubTexture name="win!0005" x="1233" y="0" width="664" height="267" frameX="-29" frameY="-11" frameWidth="723" frameHeight="289"/>
+	<SubTexture name="win!0006" x="0" y="289" width="679" height="273" frameX="-22" frameY="-8" frameWidth="723" frameHeight="289"/>
+	<SubTexture name="win!0007" x="0" y="289" width="679" height="273" frameX="-22" frameY="-8" frameWidth="723" frameHeight="289"/>
+	<SubTexture name="win!0008" x="0" y="289" width="679" height="273" frameX="-22" frameY="-8" frameWidth="723" frameHeight="289"/>
+	<SubTexture name="win!0009" x="0" y="289" width="679" height="273" frameX="-22" frameY="-8" frameWidth="723" frameHeight="289"/>
+	<SubTexture name="win!0010" x="0" y="289" width="679" height="273" frameX="-22" frameY="-8" frameWidth="723" frameHeight="289"/>
+	<SubTexture name="win!0011" x="0" y="289" width="679" height="273" frameX="-22" frameY="-8" frameWidth="723" frameHeight="289"/>
+	<SubTexture name="win!0012" x="0" y="289" width="679" height="273" frameX="-22" frameY="-8" frameWidth="723" frameHeight="289"/>
+	<SubTexture name="win!0013" x="0" y="289" width="679" height="273" frameX="-22" frameY="-8" frameWidth="723" frameHeight="289"/>
+	<SubTexture name="win!0014" x="679" y="289" width="679" height="273" frameX="-22" frameY="-8" frameWidth="723" frameHeight="289"/>
+	<SubTexture name="win!0015" x="679" y="289" width="679" height="273" frameX="-22" frameY="-8" frameWidth="723" frameHeight="289"/>
+	<SubTexture name="win!0016" x="1358" y="289" width="679" height="273" frameX="-22" frameY="-8" frameWidth="723" frameHeight="289"/>
+	<SubTexture name="win!0017" x="1358" y="289" width="679" height="273" frameX="-22" frameY="-8" frameWidth="723" frameHeight="289"/>
+	<SubTexture name="win!0018" x="0" y="562" width="679" height="273" frameX="-22" frameY="-8" frameWidth="723" frameHeight="289"/>
+	<SubTexture name="win!0019" x="0" y="562" width="679" height="273" frameX="-22" frameY="-8" frameWidth="723" frameHeight="289"/>
+	<SubTexture name="win!0020" x="679" y="562" width="679" height="273" frameX="-22" frameY="-8" frameWidth="723" frameHeight="289"/>
+	<SubTexture name="win!0021" x="679" y="562" width="679" height="273" frameX="-22" frameY="-8" frameWidth="723" frameHeight="289"/>
+	<SubTexture name="win!0022" x="1358" y="562" width="679" height="273" frameX="-22" frameY="-8" frameWidth="723" frameHeight="289"/>
+	<SubTexture name="win!0023" x="1358" y="562" width="679" height="273" frameX="-22" frameY="-8" frameWidth="723" frameHeight="289"/>
+	<SubTexture name="win!0024" x="0" y="835" width="679" height="273" frameX="-22" frameY="-8" frameWidth="723" frameHeight="289"/>
+	<SubTexture name="win!0025" x="0" y="835" width="679" height="273" frameX="-22" frameY="-8" frameWidth="723" frameHeight="289"/>
+	<SubTexture name="win!0026" x="679" y="835" width="679" height="273" frameX="-22" frameY="-8" frameWidth="723" frameHeight="289"/>
+	<SubTexture name="win!0027" x="679" y="835" width="679" height="273" frameX="-22" frameY="-8" frameWidth="723" frameHeight="289"/>
+	<SubTexture name="win!0028" x="1358" y="835" width="679" height="273" frameX="-22" frameY="-8" frameWidth="723" frameHeight="289"/>
+	<SubTexture name="win!0029" x="1358" y="835" width="679" height="273" frameX="-22" frameY="-8" frameWidth="723" frameHeight="289"/>
+	<SubTexture name="win!0030" x="1358" y="835" width="679" height="273" frameX="-22" frameY="-8" frameWidth="723" frameHeight="289"/>
+	<SubTexture name="win!0031" x="1358" y="835" width="679" height="273" frameX="-22" frameY="-8" frameWidth="723" frameHeight="289"/>
+	<SubTexture name="win!0032" x="1358" y="835" width="679" height="273" frameX="-22" frameY="-8" frameWidth="723" frameHeight="289"/>
+	<SubTexture name="win!0033" x="1358" y="835" width="679" height="273" frameX="-22" frameY="-8" frameWidth="723" frameHeight="289"/>
+	<SubTexture name="win!0034" x="1358" y="835" width="679" height="273" frameX="-22" frameY="-8" frameWidth="723" frameHeight="289"/>
+	<SubTexture name="win!0035" x="1358" y="835" width="679" height="273" frameX="-22" frameY="-8" frameWidth="723" frameHeight="289"/>
+	<SubTexture name="win!0036" x="1358" y="835" width="679" height="273" frameX="-22" frameY="-8" frameWidth="723" frameHeight="289"/>
+	<SubTexture name="win!0037" x="1358" y="835" width="679" height="273" frameX="-22" frameY="-8" frameWidth="723" frameHeight="289"/>
+	<SubTexture name="win!0038" x="1358" y="835" width="679" height="273" frameX="-22" frameY="-8" frameWidth="723" frameHeight="289"/>
+	<SubTexture name="win!0039" x="1358" y="835" width="679" height="273" frameX="-22" frameY="-8" frameWidth="723" frameHeight="289"/>
+	<SubTexture name="win!0040" x="1358" y="835" width="679" height="273" frameX="-22" frameY="-8" frameWidth="723" frameHeight="289"/>
+	<SubTexture name="win!0041" x="1358" y="835" width="679" height="273" frameX="-22" frameY="-8" frameWidth="723" frameHeight="289"/>
+	<SubTexture name="win!0042" x="1358" y="835" width="679" height="273" frameX="-22" frameY="-8" frameWidth="723" frameHeight="289"/>
+	<SubTexture name="win!0043" x="1358" y="835" width="679" height="273" frameX="-22" frameY="-8" frameWidth="723" frameHeight="289"/>
+	<SubTexture name="win!0044" x="1358" y="835" width="679" height="273" frameX="-22" frameY="-8" frameWidth="723" frameHeight="289"/>
+	<SubTexture name="win!0045" x="1358" y="835" width="679" height="273" frameX="-22" frameY="-8" frameWidth="723" frameHeight="289"/>
+	<SubTexture name="win!0046" x="1358" y="835" width="679" height="273" frameX="-22" frameY="-8" frameWidth="723" frameHeight="289"/>
+	<SubTexture name="win!0047" x="1358" y="835" width="679" height="273" frameX="-22" frameY="-8" frameWidth="723" frameHeight="289"/>
+	<SubTexture name="win!0048" x="1358" y="835" width="679" height="273" frameX="-22" frameY="-8" frameWidth="723" frameHeight="289"/>
+	<SubTexture name="win!0049" x="1358" y="835" width="679" height="273" frameX="-22" frameY="-8" frameWidth="723" frameHeight="289"/>
+	<SubTexture name="win!0050" x="1358" y="835" width="679" height="273" frameX="-22" frameY="-8" frameWidth="723" frameHeight="289"/>
+	<SubTexture name="win!0051" x="1358" y="835" width="679" height="273" frameX="-22" frameY="-8" frameWidth="723" frameHeight="289"/>
+	<SubTexture name="win!0052" x="1358" y="835" width="679" height="273" frameX="-22" frameY="-8" frameWidth="723" frameHeight="289"/>
+	<SubTexture name="win!0053" x="1358" y="835" width="679" height="273" frameX="-22" frameY="-8" frameWidth="723" frameHeight="289"/>
+	<SubTexture name="win!0054" x="1358" y="835" width="679" height="273" frameX="-22" frameY="-8" frameWidth="723" frameHeight="289"/>
+	<SubTexture name="win!0055" x="1358" y="835" width="679" height="273" frameX="-22" frameY="-8" frameWidth="723" frameHeight="289"/>
+	<SubTexture name="win!0056" x="1358" y="835" width="679" height="273" frameX="-22" frameY="-8" frameWidth="723" frameHeight="289"/>
+	<SubTexture name="win!0057" x="1358" y="835" width="679" height="273" frameX="-22" frameY="-8" frameWidth="723" frameHeight="289"/>
+	<SubTexture name="win!0058" x="1358" y="835" width="679" height="273" frameX="-22" frameY="-8" frameWidth="723" frameHeight="289"/>
+	<SubTexture name="win!0059" x="1358" y="835" width="679" height="273" frameX="-22" frameY="-8" frameWidth="723" frameHeight="289"/>
+	<SubTexture name="win!0060" x="1358" y="835" width="679" height="273" frameX="-22" frameY="-8" frameWidth="723" frameHeight="289"/>
+	<SubTexture name="win!0061" x="1358" y="835" width="679" height="273" frameX="-22" frameY="-8" frameWidth="723" frameHeight="289"/>
+	<SubTexture name="win!0062" x="1358" y="835" width="679" height="273" frameX="-22" frameY="-8" frameWidth="723" frameHeight="289"/>
+	<SubTexture name="win!0063" x="1358" y="835" width="679" height="273" frameX="-22" frameY="-8" frameWidth="723" frameHeight="289"/>
+	<SubTexture name="win!0064" x="1358" y="835" width="679" height="273" frameX="-22" frameY="-8" frameWidth="723" frameHeight="289"/>
+	<SubTexture name="win!0065" x="1358" y="835" width="679" height="273" frameX="-22" frameY="-8" frameWidth="723" frameHeight="289"/>
+	<SubTexture name="win!0066" x="1358" y="835" width="679" height="273" frameX="-22" frameY="-8" frameWidth="723" frameHeight="289"/>
+	<SubTexture name="win!0067" x="1358" y="835" width="679" height="273" frameX="-22" frameY="-8" frameWidth="723" frameHeight="289"/>
+	<SubTexture name="win!0068" x="1358" y="835" width="679" height="273" frameX="-22" frameY="-8" frameWidth="723" frameHeight="289"/>
+	<SubTexture name="win!0069" x="1358" y="835" width="679" height="273" frameX="-22" frameY="-8" frameWidth="723" frameHeight="289"/>
+	<SubTexture name="win!0070" x="1358" y="835" width="679" height="273" frameX="-22" frameY="-8" frameWidth="723" frameHeight="289"/>
+	<SubTexture name="win!0071" x="1358" y="835" width="679" height="273" frameX="-22" frameY="-8" frameWidth="723" frameHeight="289"/>
+	<SubTexture name="win!0072" x="1358" y="835" width="679" height="273" frameX="-22" frameY="-8" frameWidth="723" frameHeight="289"/>
+	<SubTexture name="win!0073" x="1358" y="835" width="679" height="273" frameX="-22" frameY="-8" frameWidth="723" frameHeight="289"/>
+</TextureAtlas>

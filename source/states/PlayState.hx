@@ -29,6 +29,7 @@ import states.FreeplayState;
 import states.editors.ChartingState;
 import states.editors.CharacterEditorState;
 
+import substates.RankingSubstate;
 import substates.PauseSubState;
 import substates.GameOverSubstate;
 
@@ -687,7 +688,7 @@ class PlayState extends MusicBeatState
 		playingText.visible = ClientPrefs.data.playingBar;
 		songBoxGroup.add(playingText);
 		
-		playingSubText = new FlxText(-290, 60, FlxG.width, SONG.song, 300);
+		playingSubText = new FlxText(-290, 60, FlxG.width, SONG.song, 16);
 		playingSubText.setFormat(Paths.font("vcr.ttf"), 30, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		playingSubText.visible = ClientPrefs.data.playingBar;
 		songBoxGroup.add(playingSubText);
@@ -1313,6 +1314,8 @@ class PlayState extends MusicBeatState
 	var tempScore:String;
 	var str:String = 'N/A';
 	var healthPercentageDisplay:String;
+	
+	public static var accuracy:Float;
 
 	// fun fact: Dynamic Functions can be overriden by just doing this
 	// `updateScore = function(miss:Bool = false) { ... }
@@ -1326,8 +1329,8 @@ class PlayState extends MusicBeatState
 
 		if (totalPlayed != 0)
 		{
-			var percent:Float = CoolUtil.floorDecimal(ratingPercent * 100, 2);
-			str = percent + '%';
+			accuracy = CoolUtil.floorDecimal(ratingPercent * 100, 2);
+			str = accuracy + '%';
 		}
 		
 		if (ratingName == "?")
@@ -1349,6 +1352,12 @@ class PlayState extends MusicBeatState
 	var average:String;
 	var rating:String;
 
+	public static var marvelousFullRank:Bool = false;
+	public static var goodFullRank:Bool = false;
+	public static var alrightFullRank:Bool = false;
+	public static var fullRank:Bool = false;
+	public static var singleDigitRank:Bool = false;
+
 	var perfects:Int;
 	var sicks:Int;
 	var goods:Int;
@@ -1363,17 +1372,59 @@ class PlayState extends MusicBeatState
 		bads = ratingsData[3].hits;
 		shits = ratingsData[4].hits;
 
-		ratingFC = "";
+		ratingFC = 'N/A';
+		
 		if(songMisses == 0)
 		{
-			if (bads > 0 || shits > 0) ratingFC = 'FC';
-			else if (goods > 0) ratingFC = 'GFC';
-			else if (sicks > 0) ratingFC = 'SFC';
-			else if (perfects > 0) ratingFC = 'SFC';
+			if (shits > 0) 
+			{
+				ratingFC = 'FC';
+				fullRank = true;
+				alrightFullRank = false;
+				goodFullRank = false;
+				marvelousFullRank = false;
+			}
+			else if (bads > 0) 
+			{
+				ratingFC = 'AFC';
+				alrightFullRank = true;
+				goodFullRank = false;
+				marvelousFullRank = false;
+			}
+			else if (goods > 0) 
+			{
+				ratingFC = 'GFC';
+				goodFullRank = true;
+				marvelousFullRank = false;
+			}
+			else if (sicks > 0) 
+			{
+				ratingFC = 'SFC';
+				marvelousFullRank = true;
+			}
+			else if (perfects > 0) 
+			{
+				ratingFC = 'MFC';
+				marvelousFullRank = true;
+			}
 		}
-		else {
-			if (songMisses < 10) ratingFC = 'SDCB';
-			else ratingFC = 'Clear';
+		else if (songMisses < 10) 
+		{
+			ratingFC = 'SDCB';
+			singleDigitRank = true;
+			fullRank = false;
+			alrightFullRank = false;
+			goodFullRank = false;
+			marvelousFullRank = false;
+		}
+		else
+		{
+			ratingFC = 'Clear';
+			singleDigitRank = false;
+			fullRank = false;
+			alrightFullRank = false;
+			goodFullRank = false;
+			marvelousFullRank = false;
 		}
 		
 		average = Math.round(averageMs) + 'ms';
@@ -2683,13 +2734,13 @@ class PlayState extends MusicBeatState
 
 				if (storyPlaylist.length <= 0)
 				{
-					Mods.loadTopMod();
-					FlxG.sound.playMusic(Paths.music('freakyMenu'));
-					#if DISCORD_ALLOWED DiscordClient.resetClientID(); #end
+					new FlxTimer().start(0.1, function(tmr:FlxTimer)
+					{
+						camHUD.alpha -= 1 / 10;	
+					}, 10);
 
-					MusicBeatState.switchState(new StoryMenuState());
+					openSubState(new RankingSubstate(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
 
-					// if ()
 					if(!ClientPrefs.getGameplaySetting('practice') && !ClientPrefs.getGameplaySetting('botplay')) {
 						StoryMenuState.weekCompleted.set(WeekData.weeksList[storyWeek], true);
 						Highscore.saveWeekScore(WeekData.getWeekFileName(), campaignScore, storyDifficulty);
@@ -2697,7 +2748,6 @@ class PlayState extends MusicBeatState
 						FlxG.save.data.weekCompleted = StoryMenuState.weekCompleted;
 						FlxG.save.flush();
 					}
-					changedDifficulty = false;
 				}
 				else
 				{
@@ -2719,13 +2769,12 @@ class PlayState extends MusicBeatState
 			}
 			else
 			{
-				trace('WENT BACK TO FREEPLAY??');
-				Mods.loadTopMod();
-				#if DISCORD_ALLOWED DiscordClient.resetClientID(); #end
+				new FlxTimer().start(0.1, function(tmr:FlxTimer)
+				{
+					camHUD.alpha -= 1 / 10;
+				}, 10);
 
-				MusicBeatState.switchState(new FreeplayState());
-				FlxG.sound.playMusic(Paths.music('freakyMenu'));
-				changedDifficulty = false;
+				openSubState(new RankingSubstate(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
 			}
 			transitioning = true;
 		}

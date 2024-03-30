@@ -40,6 +40,13 @@ class FreeplayState extends MusicBeatState
 	var bg:FlxSprite;
 	var intendedColor:Int;
 
+	var rankTable:Array<String> = [
+		'P-small', 'X-small', 'X--small', 'SS+-small', 'SS-small', 'SS--small', 'S+-small', 'S-small', 'S--small', 'A+-small', 'A-small', 'A--small',
+		'B-small', 'C-small', 'D-small', 'E-small', 'NA'
+	];
+
+	var rank:FlxSprite = new FlxSprite(0).loadGraphic(Paths.image('end_screen/rankings/NA'));
+
 	var missingTextBG:FlxSprite;
 	var missingText:FlxText;
 
@@ -132,6 +139,15 @@ class FreeplayState extends MusicBeatState
 		scoreBG = new FlxSprite(scoreText.x - 6, 0).makeGraphic(1, 66, 0xFF000000);
 		scoreBG.alpha = 0.6;
 		add(scoreBG);
+
+		rank.scale.x = rank.scale.y = 80 / rank.height;
+		rank.updateHitbox();
+		rank.antialiasing = true;
+		rank.scrollFactor.set();
+		rank.y = 105;
+		rank.x = 1150;
+		add(rank);
+		rank.antialiasing = ClientPrefs.data.antialiasing;
 
 		diffText = new FlxText(scoreText.x, scoreText.y + 36, 0, "", 24);
 		diffText.font = scoreText.font;
@@ -477,6 +493,14 @@ class FreeplayState extends MusicBeatState
 		#if !switch
 		intendedScore = Highscore.getScore(songs[curSelected].songName, curDifficulty);
 		intendedRating = Highscore.getRating(songs[curSelected].songName, curDifficulty);
+
+		rank.loadGraphic(Paths.image('end_screen/rankings/' + rankTable[Highscore.getRank(songs[curSelected].songName, curDifficulty)]));
+		rank.scale.x = rank.scale.y = 80 / rank.height;
+		rank.updateHitbox();
+		rank.antialiasing = ClientPrefs.data.antialiasing;
+		rank.scrollFactor.set();
+		rank.y = 105;
+		rank.x = 1150;
 		#end
 
 		lastDifficultyName = Difficulty.getString(curDifficulty, false);
@@ -519,7 +543,17 @@ class FreeplayState extends MusicBeatState
 				icon.alpha = 1;
 			}
 		}
-		
+
+		#if !switch
+		rank.loadGraphic(Paths.image('end_screen/rankings/' + rankTable[Highscore.getRank(songs[curSelected].songName, curDifficulty)]));
+		rank.scale.x = rank.scale.y = 80 / rank.height;
+		rank.updateHitbox();
+		rank.antialiasing = ClientPrefs.data.antialiasing;
+		rank.scrollFactor.set();
+		rank.y = 105;
+		rank.x = 1150;
+		#end
+
 		Mods.currentModDirectory = songs[curSelected].folder;
 		PlayState.storyWeek = songs[curSelected].week;
 		Difficulty.loadFromWeek();
