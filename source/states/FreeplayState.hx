@@ -37,7 +37,8 @@ class FreeplayState extends MusicBeatState
 
 	private var iconArray:Array<HealthIcon> = [];
 
-	var bg:FlxSprite;
+	public static var bg:FlxSprite;
+
 	var intendedColor:Int;
 
 	var rankTable:Array<String> = [
@@ -222,7 +223,7 @@ class FreeplayState extends MusicBeatState
 	public static var opponentVocals:FlxSound = null;
 	var holdTime:Float = 0;
 
-	var stopMusicPlay:Bool = false;
+	public static var stopMusicPlay:Bool = false;
 	override function update(elapsed:Float)
 	{
 		if (FlxG.sound.music.volume < 0.7)
@@ -440,12 +441,36 @@ class FreeplayState extends MusicBeatState
 				return;
 			}
 
-			LoadingState.prepareToSong();
-			LoadingState.loadAndSwitchState(new PlayState());
-			#if !SHOW_LOADING_SCREEN FlxG.sound.music.stop(); #end
-			stopMusicPlay = true;
+			FlxG.sound.play(Paths.sound('confirmMenu'));
 
-			destroyFreeplayVocals();
+			persistentUpdate = false;
+
+			bg.scrollFactor.set();
+			scoreText.scrollFactor.set();
+			rank.scrollFactor.set();
+			diffText.scrollFactor.set();
+			bottomText.scrollFactor.set();
+			bottomBG.scrollFactor.set();
+
+			FlxTween.tween(scoreText, {x: 1500}, 0.7, {ease: FlxEase.quartInOut});
+			FlxTween.tween(scoreBG, {alpha: 0}, 0.5, {ease: FlxEase.quartInOut});
+			FlxTween.tween(rank, {x: 1500}, 0.5, {ease: FlxEase.quartInOut});
+			FlxTween.tween(diffText, {x: 1500}, 0.7, {ease: FlxEase.quartInOut});
+			FlxTween.tween(bottomText, {y: 1000}, 0.5, {ease: FlxEase.quartInOut});
+			FlxTween.tween(bottomBG, {y: 1000}, 0.5, {ease: FlxEase.quartInOut});
+
+			for (i in 0...iconArray.length)
+				FlxTween.tween(iconArray[i], {alpha: 0}, 0.5, {ease: FlxEase.quartInOut});
+
+			for (item in grpSongs.members)
+				FlxTween.tween(item, {alpha: 0}, 0.5, {ease: FlxEase.quartInOut});
+
+			new FlxTimer().start(0.3, function(tmr:FlxTimer)
+			{
+				openSubState(new substates.ChartSubstate());
+				destroyFreeplayVocals();
+			});
+
 			#if (MODS_ALLOWED && DISCORD_ALLOWED)
 			DiscordClient.loadModRPC();
 			#end

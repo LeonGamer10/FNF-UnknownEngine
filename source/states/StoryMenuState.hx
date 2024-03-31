@@ -11,6 +11,7 @@ import objects.MenuItem;
 import objects.MenuCharacter;
 
 import options.GameplayChangersSubstate;
+
 import substates.ResetScoreSubState;
 
 import backend.StageData;
@@ -41,12 +42,18 @@ class StoryMenuState extends MusicBeatState
 	var leftArrow:FlxSprite;
 	var rightArrow:FlxSprite;
 
+	var transInBG:FlxSprite;
+
 	var loadedWeeks:Array<WeekData> = [];
 
 	override function create()
 	{
 		Paths.clearStoredMemory();
 		Paths.clearUnusedMemory();
+
+		transInBG = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
+		transInBG.alpha = 0;
+		transInBG.scrollFactor.set();
 
 		PlayState.isStoryMode = true;
 		WeekData.reloadWeekFiles(true);
@@ -167,6 +174,8 @@ class StoryMenuState extends MusicBeatState
 		add(txtTracklist);
 		add(scoreText);
 		add(txtWeekTitle);
+
+		add(transInBG);
 
 		changeWeek();
 		changeDifficulty();
@@ -325,11 +334,11 @@ class StoryMenuState extends MusicBeatState
 			LoadingState.loadNextDirectory();
 			StageData.forceNextDirectory = directory;
 
-			LoadingState.prepareToSong();
-			new FlxTimer().start(1, function(tmr:FlxTimer)
+			FlxTween.tween(transInBG, {alpha: 1}, 0.5, {ease: FlxEase.quartInOut, startDelay: 0.8});
+
+			new FlxTimer().start(1.3, function(tmr:FlxTimer)
 			{
-				#if !SHOW_LOADING_SCREEN FlxG.sound.music.stop(); #end
-				LoadingState.loadAndSwitchState(new PlayState(), true);
+				openSubState(new substates.ChartSubstate());
 				FreeplayState.destroyFreeplayVocals();
 			});
 			

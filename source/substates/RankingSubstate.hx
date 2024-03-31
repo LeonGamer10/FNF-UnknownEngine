@@ -42,8 +42,12 @@ class RankingSubstate extends MusicBeatSubstate
 		generateRanking();
 
 		#if desktop
-		var image = lime.graphics.Image.fromFile('assets/images/iconOG.png');
-		lime.app.Application.current.window.setIcon(image);
+		MusicBeatState.windowNameSuffix = " - Results: " + PlayState.SONG.song;
+		#end
+
+		#if DISCORD_ALLOWED
+		// Updating Discord Rich Presence.
+		DiscordClient.changePresence("Song Complete", null);
 		#end
 
 		if (!ClientPrefs.getGameplaySetting('botplay'))
@@ -200,15 +204,17 @@ class RankingSubstate extends MusicBeatSubstate
 		isCpu = ClientPrefs.getGameplaySetting('botplay');
 		
 		if (PlayState.marvelousFullRank && !isCpu) // Marvelous Full Combo
-			RankingSubstate.comboRank = "MFC";
+			comboRank = "MFC";
 		else if (PlayState.goodFullRank && !isCpu) // Good Full Combo
-			RankingSubstate.comboRank = "GFC";
+			comboRank = "GFC";
 		else if (PlayState.alrightFullRank && !isCpu) // Alright Full Combo
-			RankingSubstate.comboRank = "AFC";
+			comboRank = "AFC";
 		else if (PlayState.fullRank && !isCpu) // Regular FC
-			RankingSubstate.comboRank = "FC";
-		else if (PlayState.singleDigitRank || isCpu) // Single Digit Combo Breaks
-			RankingSubstate.comboRank = "SDCB";
+			comboRank = "FC";
+		else if (PlayState.singleDigitRank && !isCpu) // Single Digit Combo Breaks
+			comboRank = "SDCB";
+		else if (isCpu)
+			comboRank = "NA";
 			
 		// WIFE TIME :)))) (based on Wife3)
 
@@ -275,6 +281,9 @@ class RankingSubstate extends MusicBeatSubstate
 
 				if (PlayState.deathCounter >= 30 || PlayState.accuracy == 0)
 					ranking = "F";
+				
+				if (ClientPrefs.getGameplaySetting('botplay'))
+					ranking = "NA";
 				break;
 			}
 		}
