@@ -15,7 +15,7 @@ import objects.Note;
 class ChartSubstate extends MusicBeatSubstate
 {
     var menuItems:FlxTypedGroup<FlxSprite>;
-    var optionShit:Array<String> = ['standard', 'flip', 'chaos'];
+    var optionShit:Array<String> = ['standard', 'flip', 'chaos', 'onearrow', 'stair', 'wave'];
     var selectedSomethin:Bool = false;
     public static var curSelected:Int = 0;
     var camFollow:FlxObject;
@@ -25,6 +25,9 @@ class ChartSubstate extends MusicBeatSubstate
 	
 	public static var flip:Bool = false;
 	public static var chaos:Bool = false;
+	public static var oneArrow:Bool = false;
+	public static var stair:Bool = false;
+	public static var wave:Bool = false;
 
     public function new()
     {
@@ -65,10 +68,10 @@ class ChartSubstate extends MusicBeatSubstate
 		add(camFollow);
 
         new FlxTimer().start(0.1, function(tmr:FlxTimer)
-			{
-				selectable = true;
-                FlxG.camera.follow(camFollow, null, 7.5);
-			});
+		{
+            FlxG.camera.follow(camFollow, null, 7.5);
+			selectable = true;
+		});
     }
 
     var selectable:Bool = false;
@@ -111,16 +114,49 @@ class ChartSubstate extends MusicBeatSubstate
 				{
 					flip = true;
 					chaos = false;
+					oneArrow = false;
+					stair = false;
+					wave = false;
 				}
 				else if (optionShit[curSelected] == 'chaos')
 				{
 					flip = false;
 					chaos = true;
+					oneArrow = false;
+					stair = false;
+					wave = false;
+				}
+				else if (optionShit[curSelected] == 'onearrow')
+				{
+					flip = false;
+					chaos = false;
+					oneArrow = true;
+					stair = false;
+					wave = false;
+				}
+				else if (optionShit[curSelected] == 'stair')
+				{
+					flip = false;
+					chaos = false;
+					oneArrow = false;
+					stair = true;
+					wave = false;
+				}
+				else if (optionShit[curSelected] == 'wave')
+				{
+					flip = false;
+					chaos = true;
+					oneArrow = false;
+					stair = false;
+					wave = true;
 				}
 				else
 				{
 					flip = false;
 					chaos = false;
+					oneArrow = false;
+					stair = false;
+					wave = false;
 				}
 				
                 FlxG.sound.play(Paths.sound('confirmMenu'));

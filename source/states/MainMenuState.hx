@@ -65,7 +65,7 @@ class MainMenuState extends MusicBeatState
 			{	
 				FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
         		FlxG.sound.music.time = 9400;
-				FlxTween.tween(FlxG.sound.music, {volume: 0.7}, 0.4);
+				FlxTween.tween(FlxG.sound.music, {volume: 1}, 0.4);
 			}
 			
 		camMenu = initPsychCamera();

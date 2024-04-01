@@ -5,7 +5,11 @@ import objects.CheckboxThingie;
 
 import options.Option.OptionType;
 
-class GameplayChangersSubstate extends MusicBeatSubstate
+import states.PlayState;
+
+import substates.PauseSubState;
+
+class ModifiersSubstate extends MusicBeatSubstate
 {
 	private var curSelected:Int = 0;
 	private var optionsArray:Array<Dynamic> = [];
@@ -13,12 +17,16 @@ class GameplayChangersSubstate extends MusicBeatSubstate
 	private var grpOptions:FlxTypedGroup<Alphabet>;
 	private var checkboxGroup:FlxTypedGroup<CheckboxThingie>;
 	private var grpTexts:FlxTypedGroup<AttachedText>;
+	public static var inPause:Bool = false;
+	public var pauseState:PauseSubState;
 
 	private var curOption(get, never):GameplayOption;
 	function get_curOption() return optionsArray[curSelected]; //shorter lol
 
 	function getOptions()
 	{
+		var skip:Bool = inPause;
+
 		var goption:GameplayOption = new GameplayOption('Scroll Type', 'scrolltype', STRING, 'multiplicative', ["multiplicative", "constant"]);
 		optionsArray.push(goption);
 
@@ -67,8 +75,15 @@ class GameplayChangersSubstate extends MusicBeatSubstate
 		optionsArray.push(option);
 
 		optionsArray.push(new GameplayOption('Instakill on Miss', 'instakill', BOOL, false));
-		optionsArray.push(new GameplayOption('Practice Mode', 'practice', BOOL, false));
-		optionsArray.push(new GameplayOption('Botplay', 'botplay', BOOL, false));
+		optionsArray.push(new GameplayOption('Perfectionist', 'onlySicks', BOOL, false));
+
+		var option:GameplayOption = new GameplayOption('Practice Mode', 'practice', BOOL, false);
+		option.onChange = changeToPractice;
+		optionsArray.push(option);
+
+		var option:GameplayOption = new GameplayOption('Botplay', 'botplay', BOOL, false);
+		option.onChange = changeToBotplay;
+		optionsArray.push(option);
 	}
 
 	public function getOptionByName(name:String)
@@ -82,7 +97,7 @@ class GameplayChangersSubstate extends MusicBeatSubstate
 		return null;
 	}
 
-	public function new()
+	public function new(?pause:MusicBeatSubstate = null)
 	{
 		super();
 		
@@ -137,6 +152,17 @@ class GameplayChangersSubstate extends MusicBeatSubstate
 
 		changeSelection();
 		reloadCheckboxes();
+		
+		cameras = [FlxG.cameras.list[FlxG.cameras.list.length - 1]];
+	}
+
+	override function destroy() {
+		if (inPause)  {
+			PlayState.instance.changedModifiers();
+			FlxTween.tween(FlxG.sound.music, {volume: 0.5}, 0.8);
+			inPause = false;
+		}
+		super.destroy();
 	}
 
 	var nextAccept:Int = 5;
@@ -320,6 +346,24 @@ class GameplayChangersSubstate extends MusicBeatSubstate
 			FlxG.sound.play(Paths.sound('scrollMenu'));
 
 		holdTime = 0;
+	}
+
+	function changeToPractice()
+	{
+		if (inPause)
+		{
+			trace ("Player changed to Practice, Score won't be saved.");
+			PlayState.invalidateScore = true;
+		}
+	}
+
+	function changeToBotplay()
+	{
+		if (inPause)
+		{
+			trace ("Botplay was enabled, Score won't be saved.");
+			PlayState.invalidateScore = true;
+		}
 	}
 	
 	function changeSelection(change:Int = 0)

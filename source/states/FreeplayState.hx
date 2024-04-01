@@ -7,7 +7,7 @@ import backend.Song;
 import objects.HealthIcon;
 import objects.MusicPlayer;
 
-import options.GameplayChangersSubstate;
+import options.ModifiersSubstate;
 import substates.ResetScoreSubState;
 
 import flixel.math.FlxMath;
@@ -56,6 +56,8 @@ class FreeplayState extends MusicBeatState
 	var bottomBG:FlxSprite;
 
 	var player:MusicPlayer;
+	
+	var selectable:Bool = false;
 
 	override function create()
 	{
@@ -198,6 +200,11 @@ class FreeplayState extends MusicBeatState
 		#end
 		
 		super.create();
+
+		new FlxTimer().start(0.5, function(tmr:FlxTimer) 
+		{
+			selectable = true;
+		});
 	}
 
 	override function closeSubState()
@@ -332,7 +339,7 @@ class FreeplayState extends MusicBeatState
 		if(FlxG.keys.justPressed.CONTROL && !player.playingMusic)
 		{
 			persistentUpdate = false;
-			openSubState(new GameplayChangersSubstate());
+			openSubState(new ModifiersSubstate());
 		}
 		else if(FlxG.keys.justPressed.SPACE)
 		{
@@ -409,11 +416,13 @@ class FreeplayState extends MusicBeatState
 				player.pauseOrResume(!player.playing);
 			}
 		}
-		else if (controls.ACCEPT && !player.playingMusic)
+		else if (controls.ACCEPT && !player.playingMusic && selectable)
 		{
 			persistentUpdate = false;
 			var songLowercase:String = Paths.formatToSongPath(songs[curSelected].songName);
 			var poop:String = Highscore.formatSong(songLowercase, curDifficulty);
+			
+			selectable = false;
 
 			try
 			{
@@ -438,6 +447,7 @@ class FreeplayState extends MusicBeatState
 
 				updateTexts(elapsed);
 				super.update(elapsed);
+				selectable = true;
 				return;
 			}
 
@@ -643,7 +653,11 @@ class FreeplayState extends MusicBeatState
 
 		FlxG.autoPause = ClientPrefs.data.autoPause;
 		if (!FlxG.sound.music.playing && !stopMusicPlay)
-			FlxG.sound.playMusic(Paths.music('freakyMenu'));
+		{	
+			FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
+        	FlxG.sound.music.time = 9400;
+			FlxTween.tween(FlxG.sound.music, {volume: 1}, 0.4);
+		}
 	}	
 }
 

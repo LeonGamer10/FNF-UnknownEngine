@@ -10,14 +10,17 @@ import flixel.util.FlxStringUtil;
 
 import states.StoryMenuState;
 import states.FreeplayState;
+import states.PlayState;
 import options.OptionsState;
+import options.ModifiersSubstate;
 
 class PauseSubState extends MusicBeatSubstate
 {
 	var grpMenuShit:FlxTypedGroup<Alphabet>;
 
 	var menuItems:Array<String> = [];
-	var menuItemsOG:Array<String> = ['Resume', 'Restart Song', 'Change Difficulty', 'Options', 'Exit to menu'];
+	var menuItemsOG:Array<String> = ['Resume', 'Restart Song', 'Modifiers', 'Change Difficulty', 'Options', 'Exit'];
+	var menuItemsExit:Array<String> = [(PlayState.isStoryMode ? 'Exit to Story Menu' : 'Exit to Freeplay'), 'Exit to Main Menu', 'Exit Game', 'Back'];
 	var difficultyChoices = [];
 	var curSelected:Int = 0;
 
@@ -251,6 +254,47 @@ class PauseSubState extends MusicBeatSubstate
 				regenMenu();
 			}
 
+			if (menuItems == menuItemsExit) 
+			{
+				switch(daSelected) 
+				{
+					case "Exit to Story Menu", "Exit to Freeplay":
+							#if DISCORD_ALLOWED DiscordClient.resetClientID(); #end
+							PlayState.deathCounter = 0;
+							PlayState.seenCutscene = false;
+
+							Mods.loadTopMod();
+							if(PlayState.isStoryMode)
+								MusicBeatState.switchState(new StoryMenuState());
+							else 
+								MusicBeatState.switchState(new FreeplayState());
+
+							FlxG.sound.playMusic(Paths.music('freakyMenu'));
+							PlayState.changedDifficulty = false;
+							PlayState.chartingMode = false;
+							FlxG.camera.followLerp = 0;
+						case "Exit to Main Menu":
+							#if DISCORD_ALLOWED DiscordClient.resetClientID(); #end
+							PlayState.deathCounter = 0;
+							PlayState.seenCutscene = false;
+
+							Mods.loadTopMod();
+							MusicBeatState.switchState(new states.MainMenuState());
+							FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
+							FlxG.sound.music.time = 9400;
+							FlxTween.tween(FlxG.sound.music, {volume: 1}, 0.4);
+							PlayState.changedDifficulty = false;
+							PlayState.chartingMode = false;
+							FlxG.camera.followLerp = 0;
+						case "Exit Game":
+							trace ("See you next time");
+							openfl.system.System.exit(0);
+						case "Back":
+							menuItems = menuItemsOG;
+							regenMenu();
+				}
+			}
+			
 			switch (daSelected)
 			{
 				case "Resume":
@@ -288,6 +332,17 @@ class PauseSubState extends MusicBeatSubstate
 					PlayState.instance.notes.clear();
 					PlayState.instance.unspawnNotes = [];
 					PlayState.instance.finishSong(true);
+				case "Modifiers":
+					persistentUpdate = false;
+					persistentDraw = false;
+					openSubState(new ModifiersSubstate());
+					if(ClientPrefs.data.pauseMusic != 'None')
+					{
+						FlxG.sound.playMusic(Paths.music(Paths.formatToSongPath(ClientPrefs.data.pauseMusic)), pauseMusic.volume);
+						FlxTween.tween(FlxG.sound.music, {volume: 1}, 0.8);
+						FlxG.sound.music.time = pauseMusic.time;
+					}
+					ModifiersSubstate.inPause = true;
 				case 'Toggle Botplay':
 					PlayState.instance.cpuControlled = !PlayState.instance.cpuControlled;
 					PlayState.changedDifficulty = true;
@@ -305,21 +360,9 @@ class PauseSubState extends MusicBeatSubstate
 						FlxG.sound.music.time = pauseMusic.time;
 					}
 					OptionsState.onPlayState = true;
-				case "Exit to menu":
-					#if DISCORD_ALLOWED DiscordClient.resetClientID(); #end
-					PlayState.deathCounter = 0;
-					PlayState.seenCutscene = false;
-
-					Mods.loadTopMod();
-					if(PlayState.isStoryMode)
-						MusicBeatState.switchState(new StoryMenuState());
-					else 
-						MusicBeatState.switchState(new FreeplayState());
-
-					FlxG.sound.playMusic(Paths.music('freakyMenu'));
-					PlayState.changedDifficulty = false;
-					PlayState.chartingMode = false;
-					FlxG.camera.followLerp = 0;
+				case "Exit":
+					menuItems = menuItemsExit;
+					regenMenu();
 			}
 		}
 	}

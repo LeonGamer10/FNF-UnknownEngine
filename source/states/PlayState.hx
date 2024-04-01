@@ -32,6 +32,7 @@ import states.editors.CharacterEditorState;
 import substates.RankingSubstate;
 import substates.PauseSubState;
 import substates.GameOverSubstate;
+import substates.ChartSubstate;
 
 #if !flash
 import flixel.addons.display.FlxRuntimeShader;
@@ -197,6 +198,7 @@ class PlayState extends MusicBeatState
 	private var updateTime:Bool = true;
 	public static var changedDifficulty:Bool = false;
 	public static var chartingMode:Bool = false;
+	public static var invalidateScore:Bool = false;
 
 	//Gameplay settings
 	public var healthGain:Float = 1;
@@ -204,6 +206,7 @@ class PlayState extends MusicBeatState
 
 	public var guitarHeroSustains:Bool = false;
 	public var instakillOnMiss:Bool = false;
+	public var sickOnly:Bool = false;
 	public var cpuControlled:Bool = false;
 	public var practiceMode:Bool = false;
 
@@ -320,6 +323,7 @@ class PlayState extends MusicBeatState
 		healthGain = ClientPrefs.getGameplaySetting('healthgain');
 		healthLoss = ClientPrefs.getGameplaySetting('healthloss');
 		instakillOnMiss = ClientPrefs.getGameplaySetting('instakill');
+		sickOnly = ClientPrefs.getGameplaySetting('onlySicks', false);
 		practiceMode = ClientPrefs.getGameplaySetting('practice');
 		cpuControlled = ClientPrefs.getGameplaySetting('botplay');
 		guitarHeroSustains = ClientPrefs.data.guitarHeroSustains;
@@ -1079,6 +1083,26 @@ class PlayState extends MusicBeatState
 		}
 	}
 
+	public function changedModifiers() 
+	{
+		healthGain = ClientPrefs.getGameplaySetting('healthgain', 1);
+		healthLoss = ClientPrefs.getGameplaySetting('healthloss', 1);
+		instakillOnMiss = ClientPrefs.getGameplaySetting('instakill', false);
+		sickOnly = ClientPrefs.getGameplaySetting('onlySicks', false);
+		practiceMode = ClientPrefs.getGameplaySetting('practice', false);
+		cpuControlled = ClientPrefs.getGameplaySetting('botplay', false);
+		playbackRate = ClientPrefs.getGameplaySetting('songspeed', 1);
+		songSpeedType = ClientPrefs.getGameplaySetting('scrolltype','multiplicative');
+
+		switch(songSpeedType)
+		{
+			case "multiplicative":
+				songSpeed = SONG.speed * ClientPrefs.getGameplaySetting('scrollspeed', 1);
+			case "constant":
+				songSpeed = ClientPrefs.getGameplaySetting('scrollspeed', 1);
+		}
+	}
+
 	var startTimer:FlxTimer;
 	var finishTimer:FlxTimer = null;
 
@@ -1556,7 +1580,16 @@ class PlayState extends MusicBeatState
 		callOnScripts('onSongStart');
 	}
 
+	var flipMode:Bool = false;
+	var chaosMode:Bool = false;
+	var oneArrowMode:Bool = false;
+	var stairMode:Bool = false;
+	var waveMode:Bool = false;
+
 	var debugNum:Int = 0;
+	var stair:Int = 0;
+	var firstNoteData:Int = 0;
+	var assignedFirstData:Bool = false;
 	private var noteTypes:Array<String> = [];
 	private var eventsPushed:Array<String> = [];
 	private function generateSong(dataPath:String):Void
@@ -1626,6 +1659,12 @@ class PlayState extends MusicBeatState
 					makeEvent(event, i);
 		}
 
+		flipMode = ChartSubstate.flip;
+		chaosMode = ChartSubstate.chaos;
+		oneArrowMode = ChartSubstate.oneArrow;
+		stairMode = ChartSubstate.stair;
+		waveMode = ChartSubstate.wave;
+
 		for (section in noteData)
 		{
 			for (songNotes in section.sectionNotes)
@@ -1633,6 +1672,42 @@ class PlayState extends MusicBeatState
 				var daStrumTime:Float = songNotes[0];
 				var daNoteData:Int = Std.int(songNotes[1] % 4);
 				var gottaHitNote:Bool = section.mustHitSection;
+
+				if (!assignedFirstData && oneArrowMode)
+				{
+					firstNoteData = Std.int(songNotes[1] % 4);
+					assignedFirstData = true;
+				}
+
+				if (!chaosMode && !flipMode && !stairMode && !waveMode)
+					daNoteData = Std.int(songNotes[1] % 4);
+
+				if (oneArrowMode)
+					daNoteData = firstNoteData;
+
+				if (chaosMode)
+					daNoteData = FlxG.random.int(0, 3);
+
+				if (flipMode)
+					daNoteData = Std.int(Math.abs((songNotes[1] % 4) - 3));
+
+				if (stairMode && !waveMode) 
+				{
+					daNoteData = stair % 4;
+					stair++;
+				}
+
+				if (waveMode) {
+					switch (stair % 6) {
+						case 0 | 1 | 2 | 3:
+							daNoteData = stair % 6;
+						case 4:
+							daNoteData = 2;
+						case 5:
+							daNoteData = 1;
+					}
+					stair++;
+				}
 
 				if (songNotes[1] > 3)
 				{
@@ -1986,6 +2061,11 @@ class PlayState extends MusicBeatState
 			tempScore = Language.getPhrase('score_text_instakill', 'Score: {1} | Deaths: {2} | Health: {3} | Accuracy: {4}', [songScore, deathCounter, healthPercentageDisplay, str]);
 
 		scoreTxt.text = tempScore;
+
+		if (sickOnly && (goods > 0 || bads > 0 || shits > 0 || songMisses > 0))
+		{
+			health = -5;
+		}
 
 		perfects = ratingsData[0].hits;	
 		sicks = ratingsData[1].hits;
@@ -2712,11 +2792,14 @@ class PlayState extends MusicBeatState
 		var ret:Dynamic = callOnScripts('onEndSong', null, true);
 		if(ret != LuaUtils.Function_Stop && !transitioning)
 		{
-			#if !switch
-			var percent:Float = ratingPercent;
-			if(Math.isNaN(percent)) percent = 0;
-			Highscore.saveScore(SONG.song, songScore, storyDifficulty, percent);
-			#end
+			if (!invalidateScore)
+			{
+				#if !switch
+				var percent:Float = ratingPercent;
+				if(Math.isNaN(percent)) percent = 0;
+				Highscore.saveScore(SONG.song, songScore, storyDifficulty, percent);
+				#end
+			}
 			playbackRate = 1;
 
 			if (chartingMode)
@@ -2741,7 +2824,7 @@ class PlayState extends MusicBeatState
 
 					openSubState(new RankingSubstate(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
 
-					if(!ClientPrefs.getGameplaySetting('practice') && !ClientPrefs.getGameplaySetting('botplay')) {
+					if(!ClientPrefs.getGameplaySetting('practice') && !ClientPrefs.getGameplaySetting('botplay') && !invalidateScore) {
 						StoryMenuState.weekCompleted.set(WeekData.weeksList[storyWeek], true);
 						Highscore.saveWeekScore(WeekData.getWeekFileName(), campaignScore, storyDifficulty);
 

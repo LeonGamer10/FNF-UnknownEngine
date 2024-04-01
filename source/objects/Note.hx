@@ -8,8 +8,6 @@ import shaders.RGBPalette.RGBShaderReference;
 
 import objects.StrumNote;
 
-import substates.ChartSubstate;
-
 import flixel.math.FlxRect;
 
 using StringTools;
@@ -210,17 +208,6 @@ class Note extends FlxSprite
 	public function new(strumTime:Float, noteData:Int, ?prevNote:Note, ?sustainNote:Bool = false, ?inEditor:Bool = false, ?createdFrom:Dynamic = null)
 	{
 		super();
-
-		if (!inEditor && ChartSubstate.flip) {
-			noteData = Std.parseInt(Std.string(Math.abs(Std.parseFloat(Std.string(noteData-3)))));
-		}
-		
-		if (!inEditor && ChartSubstate.chaos) {
-		noteData = FlxG.random.int(0,3);				
-		if (sustainNote) {				
-			noteData = prevNote.noteData;					
-			}	
-		}
 
 		animation = new PsychAnimationController(this);
 
