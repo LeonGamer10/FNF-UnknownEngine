@@ -93,14 +93,14 @@ class RankingSubstate extends MusicBeatSubstate
 		combo.antialiasing = true;
 		combo.setGraphicSize(0, 130);
 
-		var press:FlxText = new FlxText(20, 15, 0, "Press any key to continue.", 32);
+		var press:FlxText = new FlxText(20, 15, 0, Language.getPhrase('key_press', "Press any key to continue."), 32);
 		press.scrollFactor.set();
 		press.setFormat(Paths.font("vcr.ttf"), 32);
 		press.setBorderStyle(OUTLINE, 0xFF000000, 5, 1);
 		press.updateHitbox();
 		add(press);
 
-		hint = new FlxText(20, 15, 0, "You passed. Miss no more than 10 times for SDCB.", 32);
+		hint = new FlxText(20, 15, 0, Language.getPhrase('fc_clear', "You passed. Miss no more than 10 times for SDCB."), 32);
 		hint.scrollFactor.set();
 		hint.setFormat(Paths.font("vcr.ttf"), 32);
 		hint.setBorderStyle(OUTLINE, 0xFF000000, 5, 1);
@@ -108,18 +108,21 @@ class RankingSubstate extends MusicBeatSubstate
 		add(hint);
 		
 		if (comboRank == "MFC" && PlayState.marvelousFullRank)
-			hint.text = "Congrats! You're perfect!";
+			hint.text = Language.getPhrase('fc_mfc', "Congrats! You're perfect!");
+
 		else if (comboRank == "GFC" && PlayState.goodFullRank)
-			hint.text = "You're doing great! Try getting sicks at minimum for MFC.";
+			hint.text = Language.getPhrase('fc_gfc', "You're doing great! Try getting sicks at minimum for MFC.");
+
 		else if (comboRank == "FC" && PlayState.fullRank)
-			hint.text = "Good job. Try getting goods at minimum for GFC.";
+			hint.text = Language.getPhrase('fc_fc', "Good job. Try getting goods at minimum for GFC.");
+
 		else if (comboRank == "SDCB" && PlayState.singleDigitRank)
-			hint.text = "Not bad. Miss no more than 1 time for FC.";
+			hint.text = Language.getPhrase('fc_sdcb', "Not bad. Miss no more than 1 time for FC.");
 
 		if (ClientPrefs.getGameplaySetting('botplay'))
 		{
 			hint.y -= 35;
-			hint.text = "Botplay is enabled. Score and Rank weren't saved.";
+			hint.text = Language.getPhrase('fc_cpu', "Botplay is enabled. Score and Rank weren't saved.");
 		}
 
 		if (PlayState.deathCounter >= 30)

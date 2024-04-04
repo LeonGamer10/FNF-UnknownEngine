@@ -33,6 +33,8 @@ class FreeplayState extends MusicBeatState
 	var intendedRating:Float = 0;
 
 	private var grpSongs:FlxTypedGroup<Alphabet>;
+	private var grpIcons:FlxTypedGroup<HealthIcon>;
+
 	private var curPlaying:Bool = false;
 
 	private var iconArray:Array<HealthIcon> = [];
@@ -107,6 +109,8 @@ class FreeplayState extends MusicBeatState
 
 		grpSongs = new FlxTypedGroup<Alphabet>();
 		add(grpSongs);
+		grpIcons = new FlxTypedGroup<HealthIcon>();
+		add(grpIcons);
 
 		for (i in 0...songs.length)
 		{
@@ -128,7 +132,7 @@ class FreeplayState extends MusicBeatState
 
 			// using a FlxGroup is too much fuss!
 			iconArray.push(icon);
-			add(icon);
+			grpIcons.add(icon);
 
 			// songText.x += 40;
 			// DONT PUT X IN THE FIRST PARAMETER OF new ALPHABET() !!
@@ -191,7 +195,12 @@ class FreeplayState extends MusicBeatState
 		
 		player = new MusicPlayer(this);
 		add(player);
-		
+
+		if(curPlaying)
+		{
+			grpIcons.members[instPlaying].canBounce = true;
+		}
+
 		changeSelection();
 		updateTexts();
 		
@@ -325,6 +334,10 @@ class FreeplayState extends MusicBeatState
 				player.playingMusic = false;
 				player.switchPlayMusic();
 
+				for (funnyIcon in grpIcons.members)
+					funnyIcon.canBounce = false;
+				curPlaying = false;
+
 				FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
 				FlxTween.tween(FlxG.sound.music, {volume: 1}, 1);
 			}
@@ -406,6 +419,12 @@ class FreeplayState extends MusicBeatState
 				FlxG.sound.music.pause();
 				instPlaying = curSelected;
 
+				Conductor.set_bpm(PlayState.SONG.bpm);
+				for (funnyIcon in grpIcons.members)
+					funnyIcon.canBounce = false;
+				grpIcons.members[instPlaying].canBounce = true;
+				curPlaying = true;
+
 				player.playingMusic = true;
 				player.curTime = 0;
 				player.switchPlayMusic();
@@ -414,6 +433,9 @@ class FreeplayState extends MusicBeatState
 			else if (instPlaying == curSelected && player.playingMusic)
 			{
 				player.pauseOrResume(!player.playing);
+				for (funnyIcon in grpIcons.members)
+					funnyIcon.canBounce = false;
+				curPlaying = false;
 			}
 		}
 		else if (controls.ACCEPT && !player.playingMusic && selectable)
@@ -618,6 +640,18 @@ class FreeplayState extends MusicBeatState
 		scoreBG.x = FlxG.width - (scoreBG.scale.x / 2);
 		diffText.x = Std.int(scoreBG.x + (scoreBG.width / 2));
 		diffText.x -= diffText.width / 2;
+	}
+
+	override function beatHit() {
+		super.beatHit();
+
+		if (curPlaying)
+		{
+			if (grpIcons.members[instPlaying].canBounce) grpIcons.members[instPlaying].bounce();
+			bg.scale.set(1.02,1.02);
+			bg.updateHitbox();
+			bg.offset.set();
+		}
 	}
 
 	var _drawDistance:Int = 4;

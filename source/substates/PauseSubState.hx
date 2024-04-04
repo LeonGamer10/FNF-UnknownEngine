@@ -21,6 +21,7 @@ class PauseSubState extends MusicBeatSubstate
 	var menuItems:Array<String> = [];
 	var menuItemsOG:Array<String> = ['Resume', 'Restart Song', 'Modifiers', 'Change Difficulty', 'Options', 'Exit'];
 	var menuItemsExit:Array<String> = [(PlayState.isStoryMode ? 'Exit to Story Menu' : 'Exit to Freeplay'), 'Exit to Main Menu', 'Exit Game', 'Back'];
+	var menuItemsDev:Array<String> = ['Skip Time', 'End Song', 'Toggle Practice Mode', 'Toggle Botplay', 'Leave Charting Mode', 'Back'];
 	var difficultyChoices = [];
 	var curSelected:Int = 0;
 
@@ -39,20 +40,16 @@ class PauseSubState extends MusicBeatSubstate
 	{
 		if(Difficulty.list.length < 2) menuItemsOG.remove('Change Difficulty'); //No need to change difficulty if there is only one!
 
-		if(PlayState.chartingMode)
-		{
-			menuItemsOG.insert(2, 'Leave Charting Mode');
-			
-			var num:Int = 0;
-			if(!PlayState.instance.startingSong)
-			{
-				num = 1;
-				menuItemsOG.insert(3, 'Skip Time');
-			}
-			menuItemsOG.insert(3 + num, 'End Song');
-			menuItemsOG.insert(4 + num, 'Toggle Practice Mode');
-			menuItemsOG.insert(5 + num, 'Toggle Botplay');
+		var devEnabled:Bool = PlayState.chartingMode;
+		#if debug devEnabled = true; #end 
+		menuItemsOG.remove('Charting Mode Options');
+		if(devEnabled) {
+			if (!PlayState.chartingMode) menuItemsDev.remove('Leave Charting Mode');
+			menuItemsOG.remove('Exit');
+			menuItemsOG.push('Charting Mode Options');
+			menuItemsOG.push('Exit');
 		}
+
 		menuItems = menuItemsOG;
 
 		for (i in 0...Difficulty.list.length) {
@@ -259,39 +256,83 @@ class PauseSubState extends MusicBeatSubstate
 				switch(daSelected) 
 				{
 					case "Exit to Story Menu", "Exit to Freeplay":
-							#if DISCORD_ALLOWED DiscordClient.resetClientID(); #end
-							PlayState.deathCounter = 0;
-							PlayState.seenCutscene = false;
+						#if DISCORD_ALLOWED DiscordClient.resetClientID(); #end
+						PlayState.deathCounter = 0;
+						PlayState.seenCutscene = false;
 
-							Mods.loadTopMod();
-							if(PlayState.isStoryMode)
-								MusicBeatState.switchState(new StoryMenuState());
-							else 
-								MusicBeatState.switchState(new FreeplayState());
+						Mods.loadTopMod();
+						if(PlayState.isStoryMode)
+							MusicBeatState.switchState(new StoryMenuState());
+						else 
+							MusicBeatState.switchState(new FreeplayState());
 
-							FlxG.sound.playMusic(Paths.music('freakyMenu'));
-							PlayState.changedDifficulty = false;
-							PlayState.chartingMode = false;
-							FlxG.camera.followLerp = 0;
-						case "Exit to Main Menu":
-							#if DISCORD_ALLOWED DiscordClient.resetClientID(); #end
-							PlayState.deathCounter = 0;
-							PlayState.seenCutscene = false;
+						FlxG.sound.playMusic(Paths.music('freakyMenu'));
+						PlayState.changedDifficulty = false;
+						PlayState.chartingMode = false;
+						FlxG.camera.followLerp = 0;
+					case "Exit to Main Menu":
+						#if DISCORD_ALLOWED DiscordClient.resetClientID(); #end
+						PlayState.deathCounter = 0;
+						PlayState.seenCutscene = false;
 
-							Mods.loadTopMod();
-							MusicBeatState.switchState(new states.MainMenuState());
-							FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
-							FlxG.sound.music.time = 9400;
-							FlxTween.tween(FlxG.sound.music, {volume: 1}, 0.4);
-							PlayState.changedDifficulty = false;
-							PlayState.chartingMode = false;
-							FlxG.camera.followLerp = 0;
-						case "Exit Game":
-							trace ("See you next time");
-							openfl.system.System.exit(0);
-						case "Back":
-							menuItems = menuItemsOG;
-							regenMenu();
+						Mods.loadTopMod();
+						MusicBeatState.switchState(new states.MainMenuState());
+						FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
+						FlxG.sound.music.time = 9400;
+						FlxTween.tween(FlxG.sound.music, {volume: 1}, 0.4);
+						PlayState.changedDifficulty = false;
+						PlayState.chartingMode = false;
+						FlxG.camera.followLerp = 0;
+					case "Exit Game":
+						trace ("See you next time");
+						openfl.system.System.exit(0);
+					case "Back":
+						menuItems = menuItemsOG;
+						regenMenu();
+				}
+			}
+
+			if (menuItems == menuItemsDev) 
+			{
+				switch(daSelected) 
+				{
+					case "Leave Charting Mode":
+						restartSong();
+						PlayState.chartingMode = false;
+					case 'Skip Time':
+						if(curTime < Conductor.songPosition)
+						{
+							PlayState.startOnTime = curTime;
+							restartSong(true);
+						}
+						else
+						{
+							if (curTime != Conductor.songPosition)
+							{
+								PlayState.instance.clearNotesBefore(curTime);
+								PlayState.instance.setSongTime(curTime);
+							}
+							close();
+						}
+					case 'End Song':
+						close();
+						PlayState.instance.notes.clear();
+						PlayState.instance.unspawnNotes = [];
+						PlayState.instance.finishSong(true);
+					case 'Toggle Botplay':
+						PlayState.instance.cpuControlled = !PlayState.instance.cpuControlled;
+						PlayState.changedDifficulty = true;
+						PlayState.instance.botplayTxt.visible = PlayState.instance.cpuControlled;
+						PlayState.instance.botplayTxt.alpha = 1;
+						PlayState.instance.botplaySine = 0;
+					case 'Toggle Practice Mode':
+						PlayState.instance.practiceMode = !PlayState.instance.practiceMode;
+						PlayState.changedDifficulty = true;
+						practiceText.visible = PlayState.instance.practiceMode;
+					case "Back":
+						menuItems = menuItemsOG;
+						deleteSkipTimeText();
+						regenMenu();
 				}
 			}
 			
@@ -303,35 +344,8 @@ class PauseSubState extends MusicBeatSubstate
 					menuItems = difficultyChoices;
 					deleteSkipTimeText();
 					regenMenu();
-				case 'Toggle Practice Mode':
-					PlayState.instance.practiceMode = !PlayState.instance.practiceMode;
-					PlayState.changedDifficulty = true;
-					practiceText.visible = PlayState.instance.practiceMode;
 				case "Restart Song":
 					restartSong();
-				case "Leave Charting Mode":
-					restartSong();
-					PlayState.chartingMode = false;
-				case 'Skip Time':
-					if(curTime < Conductor.songPosition)
-					{
-						PlayState.startOnTime = curTime;
-						restartSong(true);
-					}
-					else
-					{
-						if (curTime != Conductor.songPosition)
-						{
-							PlayState.instance.clearNotesBefore(curTime);
-							PlayState.instance.setSongTime(curTime);
-						}
-						close();
-					}
-				case 'End Song':
-					close();
-					PlayState.instance.notes.clear();
-					PlayState.instance.unspawnNotes = [];
-					PlayState.instance.finishSong(true);
 				case "Modifiers":
 					persistentUpdate = false;
 					persistentDraw = false;
@@ -343,12 +357,6 @@ class PauseSubState extends MusicBeatSubstate
 						FlxG.sound.music.time = pauseMusic.time;
 					}
 					ModifiersSubstate.inPause = true;
-				case 'Toggle Botplay':
-					PlayState.instance.cpuControlled = !PlayState.instance.cpuControlled;
-					PlayState.changedDifficulty = true;
-					PlayState.instance.botplayTxt.visible = PlayState.instance.cpuControlled;
-					PlayState.instance.botplayTxt.alpha = 1;
-					PlayState.instance.botplaySine = 0;
 				case 'Options':
 					PlayState.instance.paused = true; // For lua
 					PlayState.instance.vocals.volume = 0;
@@ -360,6 +368,9 @@ class PauseSubState extends MusicBeatSubstate
 						FlxG.sound.music.time = pauseMusic.time;
 					}
 					OptionsState.onPlayState = true;
+				case 'Developer Options':
+					menuItems = menuItemsDev;
+					regenMenu();
 				case "Exit":
 					menuItems = menuItemsExit;
 					regenMenu();

@@ -19,10 +19,10 @@ class OptionsState extends MusicBeatState
 	private static var curSelected:Int = 0;
 	public static var menuBG:FlxSprite;
 	public static var onPlayState:Bool = false;
-	
+
 	var selectable:Bool = false;
-	
 	var menuMusic:FlxSound;
+	var description:FlxText;
 
 	function openSelectedSubstate(label:String) {
 		switch(label)
@@ -83,9 +83,19 @@ class OptionsState extends MusicBeatState
 		side.antialiasing = true;
 		side.x = 0;
 
+		description = new FlxText(20, 69, FlxG.width / 2, "", 48);
+		description.scrollFactor.x = 0;
+		description.scrollFactor.y = 0;
+		description.setFormat(Paths.font("vcr.ttf"), 24, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		description.alignment = LEFT;
+		description.x = 20;
+		description.y = 924;
+		description.borderSize = 2;
+
 		bg.screenCenter();
 		add(bg);
 		add(side);
+		add(description);
 
 		grpOptions = new FlxTypedGroup<Alphabet>();
 		add(grpOptions);
@@ -110,6 +120,7 @@ class OptionsState extends MusicBeatState
 		{
 			FlxG.camera.zoom = 3;
 			FlxTween.tween(FlxG.camera, {zoom: 1}, 1.5, {ease: FlxEase.expoInOut});
+			FlxTween.tween(description, {y: 624}, 2.9, {ease: FlxEase.expoInOut});
 		});
 		
 		new FlxTimer().start(1.3, function(tmr:FlxTimer)
@@ -146,6 +157,8 @@ class OptionsState extends MusicBeatState
 			if (controls.UI_DOWN_P)
 				changeSelection(1);
 
+			updateTexts();
+
 			if (controls.BACK)
 			{
 				FlxG.sound.play(Paths.sound('cancelMenu'));
@@ -161,7 +174,30 @@ class OptionsState extends MusicBeatState
 			else if (controls.ACCEPT) openSelectedSubstate(options[curSelected]);
 		}
 	}
-	
+
+	function updateTexts()
+	{
+		switch (options[curSelected])
+		{
+			case 'Note Colors':
+				description.text = Language.getPhrase('description_note_colors', "NOTE COLORS:\nChange the colors of the funny\nnotes.");
+			case 'Controls':
+				description.text = Language.getPhrase('description_controls', "CONTROLS:\nChange your controls, however\nyou want.");
+			case 'Adjust Delay and Rating Pop-up':
+				description.text = Language.getPhrase('description_adjust_delay_and_rating_pop-up', "ADJUST DELAY AND RATING POP-UP:\nChange the offset of the rating\npopup or audio delay.");
+			case 'Graphics':
+				description.text = Language.getPhrase('description_graphics', "GRAPHICS:\nChange how the graphics work in\ngame.");
+			case 'Visuals':
+				description.text = Language.getPhrase('description_visuals', "VISUALS:\nChange the UI, menus, or audio\nof the game.");
+			case 'Gameplay':
+				description.text = Language.getPhrase('description_gameplay', "GAMEPLAY: \nChange how in song gameplay\nworks.");
+			case 'Language':
+				description.text = Language.getPhrase('description_language', "LANGUAGE: \nSelect your preferred language.");
+			case 'Advanced':
+				description.text = Language.getPhrase('description_advanced', "ADVANCED: \nAdvanced options that do\nnot fit the above categories.");
+		}
+	}
+
 	function changeSelection(change:Int = 0)
 	{
 		curSelected = FlxMath.wrap(curSelected + change, 0, options.length - 1);

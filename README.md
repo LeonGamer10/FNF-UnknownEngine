@@ -1,9 +1,20 @@
+<h1 align="center">
+  <br>
+  <a href="https://github.com/LeonGamer10/FNF-UnknownEngine/blob/main/assets/shared/images/titlelogo.png" target="_blank"><img src="/assets/shared/images/titlelogo.png"></a>
+  <br>
+  <b>FNF: Unknown Engine</b>
+  <br>
+</h1>
+<h3 align="center">
+  <b>(WIP) Unknown Engine is a bloated Psych Engine fork, having features from Mic'd Up / EX Replayability.</b>
+</h3>
+
 # Friday Night Funkin' - Psych Engine
 Engine originally used on [Mind Games Mod](https://gamebanana.com/mods/301107), intended to be a fix for the vanilla version's many issues while keeping the casual play aspect of it. Also aiming to be an easier alternative to newbie coders.
 
 ## Installation:
 
-Refer to [the Build Instructions](./BUILDING.md)
+Refer to [the Build Instructions.](./BUILDING.md)
 
 ## Customization:
 
@@ -15,9 +26,25 @@ to start you off, disabling Videos should be simple, simply Delete the line `"VI
 
 same goes for *Lua Scripts*, comment out or delete the line with `LUA_ALLOWED`, this and other customization options are all available within the `Project.xml` file
 
-## Credits:
+<details>
+  <summary><h2>Credits and Features</h2></summary>
+
+# Credits
+* LeonGamer - Programmer
+* Fastbreak383 - Assistant Programmer
+* QoTz - Portuguese Translations
+* AshishXMC - Artist
+
+* [Hydra](https://www.youtube.com/channel/UCEnQefrHAncXQtU4f5jloCA) - [Gettin' Freaky (Main Menu theme) remix](https://youtu.be/26jLVUkV5ew)
+
+## Psych Team:
 * Shadow Mario - Programmer
 * Riveren - Artist
+
+## Mic'd Up Team:
+* Verwex - Mic'd Up itself
+* KadeDev - Programmer
+* Ash237 - Programmer
 
 ### Special Thanks
 * bbpanzu - Ex-Programmer
