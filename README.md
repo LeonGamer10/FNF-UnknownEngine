@@ -1,6 +1,6 @@
 <h1 align="center">
   <br>
-  <a href="https://github.com/LeonGamer10/FNF-UnknownEngine/blob/main/assets/shared/images/titlelogo.png" target="_blank"><img src="/assets/shared/images/titlelogo.png"></a>
+  <a href="https://github.com/LeonGamer10/FNF-UnknownEngine/blob/main/assets/shared/images/titleLogoUE.png" target="_blank"><img src="/assets/shared/images/titleLogoUE.png"></a>
   <br>
   <b>FNF: Unknown Engine</b>
   <br>
