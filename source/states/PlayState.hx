@@ -176,6 +176,10 @@ class PlayState extends MusicBeatState
 	public var gfSpeed:Int = 1;
 	public var health(default, set):Float = 1;
 	public var totalHealth:Float = 50;
+	public var totalHealth2:Float = 50;
+	public var totalHealthBar:Float = 50;
+
+	public static var maxHealth:Float = 2;
 
 	public var combo:Int = 0;
 	public var maxCombo:Int = 0;
@@ -322,8 +326,10 @@ class PlayState extends MusicBeatState
 		// Gameplay settings
 		healthGain = ClientPrefs.getGameplaySetting('healthgain');
 		healthLoss = ClientPrefs.getGameplaySetting('healthloss');
+		health = ClientPrefs.getGameplaySetting('startinghealth', 0.5) * 2.0;
+		maxHealth = ClientPrefs.getGameplaySetting('maxhealth', 1) * 2.0;
 		instakillOnMiss = ClientPrefs.getGameplaySetting('instakill');
-		sickOnly = ClientPrefs.getGameplaySetting('onlySicks', false);
+		sickOnly = ClientPrefs.getGameplaySetting('onlysicks');
 		practiceMode = ClientPrefs.getGameplaySetting('practice');
 		cpuControlled = ClientPrefs.getGameplaySetting('botplay');
 		guitarHeroSustains = ClientPrefs.data.guitarHeroSustains;
@@ -2100,10 +2106,13 @@ class PlayState extends MusicBeatState
 				openCharacterEditor();
 		}
 
-		if (healthBar.bounds.max != null && health > healthBar.bounds.max)
-			health = healthBar.bounds.max;
-			
+		if (health > maxHealth)
+			health = maxHealth;
+
 		totalHealth = health / 0.02; // Don't round this for smooth health bar movement
+		totalHealthBar = totalHealth;
+		if (totalHealth2 != CoolUtil.floorDecimal(totalHealth, 0))
+			updateScore(true);
 
 		updateIconsScale(elapsed);
 		updateIconsPosition();
@@ -2295,6 +2304,27 @@ class PlayState extends MusicBeatState
 		var iconOffset:Int = 26;
 		iconP1.x = healthBar.barCenter + (150 * iconP1.scale.x - 150) / 2 - iconOffset;
 		iconP2.x = healthBar.barCenter - (150 * iconP2.scale.x) / 2 - iconOffset * 2;
+
+		if (totalHealthBar > 100 || totalHealthBar < 0)
+		{
+			var p2ToUse:Float = healthBar.x + (healthBar.width * (FlxMath.remapToRange(health / 2 * 100, 0, 100, 100, 0) * 0.01)) - (150 * iconP2.scale.x) / 2 - iconOffset * 2;
+
+			p2ToUse = healthBar.x + (healthBar.width * (FlxMath.remapToRange(health / 2 * 100, 0, 100, 100, 0) * 0.01)) - (150 * iconP2.scale.x) / 2 - iconOffset * 2;
+
+			if (iconP2.x - iconP2.width / 2 < healthBar.x && iconP2.x > p2ToUse)
+			{
+				healthBar.offset.x = iconP2.x - p2ToUse;
+				healthStripes.offset.x = iconP2.x - p2ToUse;
+			}
+			else
+			{
+				healthBar.offset.x = 0;
+				healthStripes.offset.x = 0;
+			}
+
+			iconP1.x = healthBar.x + (healthBar.width * (FlxMath.remapToRange(health / 2 * 100, 0, 100, 100, 0) * 0.01) + (150 * iconP1.scale.x - 150) / 2 - iconOffset);
+			iconP2.x = p2ToUse;
+		}
 	}
 
 	var iconsAnimations:Bool = true;

@@ -35,6 +35,7 @@ class PauseSubState extends MusicBeatSubstate
 	var missingText:FlxText;
 
 	public static var songName:String = null;
+	public static var mustRestart:Bool = false;
 
 	override function create()
 	{
@@ -161,6 +162,9 @@ class PauseSubState extends MusicBeatSubstate
 	var cantUnpause:Float = 0.1;
 	override function update(elapsed:Float)
 	{
+		if (mustRestart)
+			restartSong();
+
 		cantUnpause -= elapsed;
 		if (pauseMusic.volume < 0.5)
 			pauseMusic.volume += 0.01 * elapsed;
@@ -402,6 +406,8 @@ class PauseSubState extends MusicBeatSubstate
 			FlxTransitionableState.skipNextTransOut = true;
 		}
 		MusicBeatState.resetState();
+
+		mustRestart = false;
 	}
 
 	override function destroy()

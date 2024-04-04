@@ -55,6 +55,7 @@ class ModifiersSubstate extends MusicBeatSubstate
 		option.changeValue = 0.01;
 		option.displayFormat = '%vX';
 		option.decimals = 2;
+		option.onChange = changeAndRestart;
 		optionsArray.push(option);
 		#end
 
@@ -73,6 +74,25 @@ class ModifiersSubstate extends MusicBeatSubstate
 		option.changeValue = 0.1;
 		option.displayFormat = '%vX';
 		optionsArray.push(option);
+
+		var option:GameplayOption = new GameplayOption('Starting Health', 'startinghealth', PERCENT, 0.5);
+		option.scrollSpeed = 1.7;
+		option.minValue = 0.01;
+		option.maxValue = 2;
+		option.changeValue = 0.01;
+		option.displayFormat = '%v%';
+		optionsArray.push(option);
+
+		var option:GameplayOption = new GameplayOption('Maximum Health', 'maxhealth', PERCENT, 1);
+		option.scrollSpeed = 1.7;
+		option.minValue = 0.01;
+		option.maxValue = 3.5;
+		option.changeValue = 0.01;
+		option.displayFormat = '%v%';
+		option.onChange = changeAndRestart;
+		optionsArray.push(option);
+
+
 
 		optionsArray.push(new GameplayOption('Instakill on Miss', 'instakill', BOOL, false));
 		optionsArray.push(new GameplayOption('Perfectionist', 'onlySicks', BOOL, false));
@@ -354,6 +374,15 @@ class ModifiersSubstate extends MusicBeatSubstate
 		{
 			trace ("Player changed to Practice, Score won't be saved.");
 			PlayState.invalidateScore = true;
+		}
+	}
+
+	function changeAndRestart()
+	{
+		if(inPause)
+		{
+			trace ("HEY! You changed an option that requires a chart restart!");
+			PauseSubState.mustRestart = true;
 		}
 	}
 
