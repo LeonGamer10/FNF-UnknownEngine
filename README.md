@@ -28,8 +28,8 @@ same goes for *Lua Scripts*, comment out or delete the line with `LUA_ALLOWED`, 
 
 # Credits
 * LeonGamer - Programmer
-* Fastbreak383 - Assistant Programmer
-* QoTz - Portuguese Translations
+* Fastbreak383 - Programmer
+* QoTz - Translations
 * AshishXMC - Artist
 
 * [Hydra](https://www.youtube.com/channel/UCEnQefrHAncXQtU4f5jloCA) - [Gettin' Freaky (Main Menu theme) remix](https://youtu.be/26jLVUkV5ew)
