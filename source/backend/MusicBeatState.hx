@@ -5,7 +5,6 @@ import lime.app.Application;
 #end
 
 import flixel.addons.ui.FlxUIState;
-import flixel.addons.transition.FlxTransitionableState;
 import flixel.FlxState;
 import backend.PsychCamera;
 

@@ -28,7 +28,6 @@ class ModifiersSubstate extends MusicBeatSubstate
 		var skip:Bool = inPause;
 
 		var goption:GameplayOption = new GameplayOption('Scroll Type', 'scrolltype', STRING, 'multiplicative', ["multiplicative", "constant"]);
-		goption.onChange = changeAndRestart;
 		optionsArray.push(goption);
 
 		var option:GameplayOption = new GameplayOption('Scroll Speed', 'scrollspeed', FLOAT, 1);
@@ -36,7 +35,6 @@ class ModifiersSubstate extends MusicBeatSubstate
 		option.minValue = 0.35;
 		option.changeValue = 0.05;
 		option.decimals = 2;
-		option.onChange = changeAndRestart;
 		if (goption.getValue() != "constant")
 		{
 			option.displayFormat = '%vX';
@@ -57,7 +55,6 @@ class ModifiersSubstate extends MusicBeatSubstate
 		option.changeValue = 0.01;
 		option.displayFormat = '%vX';
 		option.decimals = 2;
-		option.onChange = changeAndRestart;
 		optionsArray.push(option);
 		#end
 
@@ -67,7 +64,6 @@ class ModifiersSubstate extends MusicBeatSubstate
 		option.maxValue = 5;
 		option.changeValue = 0.1;
 		option.displayFormat = '%vX';
-		option.onChange = changeAndRestart;
 		optionsArray.push(option);
 
 		var option:GameplayOption = new GameplayOption('Health Loss Multiplier', 'healthloss', FLOAT, 1);
@@ -76,7 +72,6 @@ class ModifiersSubstate extends MusicBeatSubstate
 		option.maxValue = 5;
 		option.changeValue = 0.1;
 		option.displayFormat = '%vX';
-		option.onChange = changeAndRestart;
 		optionsArray.push(option);
 
 		var option:GameplayOption = new GameplayOption('Starting Health', 'startinghealth', PERCENT, 0.5);
@@ -85,7 +80,6 @@ class ModifiersSubstate extends MusicBeatSubstate
 		option.maxValue = 2;
 		option.changeValue = 0.01;
 		option.displayFormat = '%v%';
-		option.onChange = changeAndRestart;
 		optionsArray.push(option);
 
 		var option:GameplayOption = new GameplayOption('Maximum Health', 'maxhealth', PERCENT, 1);
@@ -94,7 +88,6 @@ class ModifiersSubstate extends MusicBeatSubstate
 		option.maxValue = 3.5;
 		option.changeValue = 0.01;
 		option.displayFormat = '%v%';
-		option.onChange = changeAndRestart;
 		optionsArray.push(option);
 
 
@@ -103,11 +96,9 @@ class ModifiersSubstate extends MusicBeatSubstate
 		optionsArray.push(new GameplayOption('Perfectionist', 'onlySicks', BOOL, false));
 
 		var option:GameplayOption = new GameplayOption('Practice Mode', 'practice', BOOL, false);
-		option.onChange = changeAndRestart;
 		optionsArray.push(option);
 
 		var option:GameplayOption = new GameplayOption('Botplay', 'botplay', BOOL, false);
-		option.onChange = changeAndRestart;
 		optionsArray.push(option);
 	}
 
@@ -125,7 +116,7 @@ class ModifiersSubstate extends MusicBeatSubstate
 	public function new(?pause:MusicBeatSubstate = null)
 	{
 		super();
-		
+
 		var bg:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
 		bg.alpha = 0.6;
 		add(bg);
@@ -185,6 +176,7 @@ class ModifiersSubstate extends MusicBeatSubstate
 		if (inPause)  {
 			PlayState.instance.changedModifiers();
 			FlxTween.tween(FlxG.sound.music, {volume: 0.5}, 0.8);
+			toRestart();
 			inPause = false;
 		}
 		super.destroy();
@@ -373,11 +365,11 @@ class ModifiersSubstate extends MusicBeatSubstate
 		holdTime = 0;
 	}
 
-	function changeAndRestart()
+	function toRestart()
 	{
 		if(inPause)
 		{
-			trace ("HEY! You changed an option that requires a chart restart!");
+			trace ("Time to fucken restart");
 			PauseSubState.mustRestart = true;
 		}
 	}

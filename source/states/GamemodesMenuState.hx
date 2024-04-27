@@ -7,7 +7,6 @@ import backend.Discord.DiscordClient;
 import flixel.util.FlxTimer;
 import flixel.util.FlxGradient;
 
-import flixel.addons.transition.FlxTransitionableState;
 import flixel.addons.display.FlxBackdrop;
 import flixel.addons.display.FlxGridOverlay;
 

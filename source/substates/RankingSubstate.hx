@@ -9,8 +9,6 @@ import backend.Rating;
 
 import flixel.system.FlxSound;
 
-import flixel.addons.transition.FlxTransitionableState;
-
 import states.StoryMenuState;
 import states.FreeplayState;
 import states.PlayState;

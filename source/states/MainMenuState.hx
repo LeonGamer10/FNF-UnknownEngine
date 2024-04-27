@@ -2,7 +2,6 @@ package states;
 
 import flixel.FlxObject;
 import flixel.util.FlxGradient;
-import flixel.addons.transition.FlxTransitionableState;
 import flixel.addons.display.FlxBackdrop;
 import flixel.addons.display.FlxGridOverlay;
 import flixel.effects.FlxFlicker;
