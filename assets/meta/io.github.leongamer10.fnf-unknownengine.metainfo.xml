@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop-application">
-  <id>io.github.leongamerps4.fnf-unknownengine</id>
+  <id>io.github.leongamer10.fnf-unknownengine</id>
   <launchable type="desktop-id">io.github.leongamer10.fnf-unknownengine.desktop</launchable>
   <name>UnknownEngine</name>
   <developer id="github.com/leongamer10">
-    <name>ShadowMario</name>
+    <name>LeonGamer</name>
     <contact>https://github.com/LeonGamer10/</contact>
   </developer>
   <summary>Desktop implementation of Friday Night Funkin'</summary>
@@ -12,9 +12,9 @@
   <project_license>Apache-2.0</project_license>
   <url type="homepage">https://github.com/ShadowMario/FNF-PsychEngine</url>
   <description>
-      <p>A modded version of Psych Engine, which was originally used on the Mind Games Mod for Friday Night Funkin', intended 
-	  to be a fix for the vanilla version's many issues while keeping the casual play aspect of it. Also aiming to be an 
-	  easier alternative to newbie developers wanting to make their own variants.</p>
+      <p>A terribly modded version of Psych Engine, which was originally used on the Mind Games Mod for Friday Night Funkin', 
+	 intended to be a fix for the vanilla version's many issues while keeping the casual play aspect of it. Also aiming to 
+	 be an easier alternative to newbie developers wanting to make their own variants.</p>
   </description>
   <screenshots>
     <screenshot type="default">
@@ -54,7 +54,7 @@
     <category>Game</category>
   </categories>
   <releases>
-    <release version="???" date="2024-03-27"><url>https://github.com/LeonGamerPS4/FNF-UnknownEngine/releases/tag/v2.5-beta.6</url></release>
+    <release version="3.0" date="2024-12-31"><url>https://github.com/LeonGamer10/FNF-UnknownEngine/releases/tag/v3.0</url></release>
   </releases>
   <content_rating type="oars-1.1">
     <content_attribute id="violence-cartoon">intense</content_attribute>
