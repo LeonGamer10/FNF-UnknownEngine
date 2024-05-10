@@ -119,7 +119,7 @@ class GamemodesMenuState extends MusicBeatState
 			menuItem.updateHitbox();
 		}
 
-		camMenu.follow(camFollow, null, 7);
+		camMenu.follow(camFollow, null, 0.09);
 		
 		new FlxTimer().start(0.22, function(tmr:FlxTimer)
 		{

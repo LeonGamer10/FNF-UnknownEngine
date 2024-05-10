@@ -17,7 +17,7 @@ enum MainMenuColumn {
 
 class MainMenuState extends MusicBeatState
 {
-	public static var psychEngineVersion:String = '1.0a';
+	public static var psychEngineVersion:String = '1.0b';
 	public static var unknownEngineVersion:String = '3.0a';
 	public static var curSelected:Int = 0;
 	public static var curColumn:MainMenuColumn = CENTER;
@@ -161,7 +161,7 @@ class MainMenuState extends MusicBeatState
 			selectable = true;
 		});
 
-		camMenu.follow(camFollow, null, 9);
+		camMenu.follow(camFollow, null, 0.15);
 	}
 
 	function createMenuItem(name:String, x:Float, y:Float):FlxSprite
