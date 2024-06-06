@@ -65,9 +65,6 @@ class GamemodesMenuState extends MusicBeatState
 				FlxTween.tween(FlxG.sound.music, {volume: 0.7}, 0.4);
 			}
 
-		transIn = FlxTransitionableState.defaultTransIn;
-		transOut = FlxTransitionableState.defaultTransOut;
-
 		bg.scrollFactor.x = 0;
 		bg.scrollFactor.y = 0.03;
 		bg.setGraphicSize(Std.int(bg.width * 1.1));
@@ -119,7 +116,7 @@ class GamemodesMenuState extends MusicBeatState
 			menuItem.updateHitbox();
 		}
 
-		camMenu.follow(camFollow, null, 0.09);
+		camMenu.follow(camFollow, null, 7);
 		
 		new FlxTimer().start(0.22, function(tmr:FlxTimer)
 		{

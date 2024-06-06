@@ -41,11 +41,11 @@ class PauseSubState extends MusicBeatSubstate
 
 		var devEnabled:Bool = PlayState.chartingMode;
 		#if debug devEnabled = true; #end 
-		menuItemsOG.remove('Charting Mode Options');
+		menuItemsOG.remove('Developer Options');
 		if(devEnabled) {
 			if (!PlayState.chartingMode) menuItemsDev.remove('Leave Charting Mode');
 			menuItemsOG.remove('Exit');
-			menuItemsOG.push('Charting Mode Options');
+			menuItemsOG.push('Developer Options');
 			menuItemsOG.push('Exit');
 		}
 

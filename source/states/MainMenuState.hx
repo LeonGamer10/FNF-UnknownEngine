@@ -31,7 +31,8 @@ class MainMenuState extends MusicBeatState
 
 	//Centered/Text options
 	var optionShit:Array<String> = [
-		'play',
+		'story_mode',
+		'freeplay',
 		#if MODS_ALLOWED 'mods', #end
 		'credits'
 	];
@@ -70,9 +71,6 @@ class MainMenuState extends MusicBeatState
 			
 		camMenu = initPsychCamera();
 		FlxCamera.defaultCameras = [camMenu];
-
-		transIn = FlxTransitionableState.defaultTransIn;
-		transOut = FlxTransitionableState.defaultTransOut;
 
 		persistentUpdate = persistentDraw = true;
 
@@ -337,8 +335,14 @@ class MainMenuState extends MusicBeatState
 					{
 						switch (option)
 						{
+							/*
 							case 'play':
 								MusicBeatState.switchState(new GamemodesMenuState());
+							*/
+							case 'story_mode':
+								MusicBeatState.switchState(new StoryMenuState());
+							case 'freeplay':
+								MusicBeatState.switchState(new FreeplayState());
 
 							#if MODS_ALLOWED
 							case 'mods':

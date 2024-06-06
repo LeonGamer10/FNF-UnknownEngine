@@ -130,11 +130,6 @@ class LoadingState extends MusicBeatState
 		barWidth = Std.int(bg.width - 10);
 
 		persistentUpdate = true;
-		
-		#if desktop
-		MusicBeatState.windowNameSuffix = " - Now Loading";
-		#end
-		
 		super.create();
 	}
 
@@ -178,10 +173,6 @@ class LoadingState extends MusicBeatState
 				dots = '...';
 		}
 		loadingText.text = Language.getPhrase('now_loading', 'Now Loading{1}', [dots]);
-		
-		#if desktop
-		MusicBeatState.windowNameSuffix = " - Now Loading" + dots;
-		#end
 
 		if(!spawnedPessy)
 		{
@@ -248,10 +239,6 @@ class LoadingState extends MusicBeatState
 		MusicBeatState.switchState(target);
 		transitioning = true;
 		finishedLoading = true;
-		
-		#if desktop
-		MusicBeatState.windowNameSuffix = "";
-		#end
 	}
 
 	public static function checkLoaded():Bool
@@ -363,8 +350,28 @@ class LoadingState extends MusicBeatState
 				json = Json.parse(Assets.getText(path));
 				#end
 
-				if (json != null)
-					prepare((!ClientPrefs.data.lowQuality || json.images_low) ? json.images : json.images_low, json.sounds, json.music);
+				if(json != null)
+				{
+					var imgs:Array<String> = [];
+					var snds:Array<String> = [];
+					var mscs:Array<String> = [];
+					for (asset in Reflect.fields(json))
+					{
+						var filters:Int = Reflect.field(json, asset);
+						var asset:String = asset.trim();
+
+						if(filters < 0 || StageData.validateVisibility(filters))
+						{
+							if(asset.startsWith('images/'))
+								imgs.push(asset.substr('images/'.length));
+							else if(asset.startsWith('sounds/'))
+								snds.push(asset.substr('sounds/'.length));
+							else if(asset.startsWith('music/'))
+								mscs.push(asset.substr('music/'.length));
+						}
+					}
+					prepare(imgs, snds, mscs);
+				}
 			}
 			catch(e:Dynamic) {}
 			completedThread();
@@ -376,7 +383,27 @@ class LoadingState extends MusicBeatState
 
 			var stageData:StageFile = StageData.getStageFile(song.stage);
 			if (stageData != null && stageData.preload != null)
-				prepare((!ClientPrefs.data.lowQuality || stageData.preload.images_low) ? stageData.preload.images : stageData.preload.images_low, stageData.preload.sounds, stageData.preload.music);
+			{
+				var imgs:Array<String> = [];
+				var snds:Array<String> = [];
+				var mscs:Array<String> = [];
+				for (asset in Reflect.fields(stageData.preload))
+				{
+					var filters:Int = Reflect.field(stageData.preload, asset);
+					var asset:String = asset.trim();
+
+					if(filters < 0 || StageData.validateVisibility(filters))
+					{
+						if(asset.startsWith('images/'))
+							imgs.push(asset.substr('images/'.length));
+						else if(asset.startsWith('sounds/'))
+							snds.push(asset.substr('sounds/'.length));
+						else if(asset.startsWith('music/'))
+							mscs.push(asset.substr('music/'.length));
+					}
+				}
+				prepare(imgs, snds, mscs);
+			}
 
 			songsToPrepare.push('$folder/Inst');
 

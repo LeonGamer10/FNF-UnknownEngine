@@ -69,7 +69,7 @@ class ChartSubstate extends MusicBeatSubstate
 
         new FlxTimer().start(0.1, function(tmr:FlxTimer)
 		{
-            FlxG.camera.follow(camFollow, null, 7.5);
+            FlxG.camera.follow(camFollow, null, 0.075);
 			selectable = true;
 		});
     }

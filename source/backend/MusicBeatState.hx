@@ -4,11 +4,10 @@ package backend;
 import lime.app.Application;
 #end
 
-import flixel.addons.ui.FlxUIState;
 import flixel.FlxState;
 import backend.PsychCamera;
 
-class MusicBeatState extends FlxUIState
+class MusicBeatState extends FlxState
 {
 	private var curSection:Int = 0;
 	private var stepsToDo:Int = 0;
