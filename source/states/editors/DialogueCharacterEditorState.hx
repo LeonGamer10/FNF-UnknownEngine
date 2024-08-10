@@ -136,7 +136,11 @@ class DialogueCharacterEditorState extends MusicBeatState implements PsychUIEven
 		addEditorBox();
 		FlxG.mouse.visible = true;
 		updateCharTypeBox();
-		
+
+		#if desktop
+		MusicBeatState.windowNameSuffix = " - Dialogue Character Editor";
+		#end
+
 		super.create();
 	}
 

@@ -64,6 +64,10 @@ class MenuCharacterEditorState extends MusicBeatState implements PsychUIEventHan
 		FlxG.mouse.visible = true;
 		updateCharacters();
 
+		#if desktop
+		MusicBeatState.windowNameSuffix = " - Menu Character Editor";
+		#end
+
 		super.create();
 	}
 

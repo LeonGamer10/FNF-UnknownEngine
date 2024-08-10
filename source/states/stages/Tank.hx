@@ -5,6 +5,8 @@ import cutscenes.CutsceneHandler;
 import substates.GameOverSubstate;
 import objects.Character;
 
+import flxanimate.PsychFlxAnimate;
+
 class Tank extends BaseStage
 {
 	var tankWatchtower:BGSprite;
@@ -132,8 +134,8 @@ class Tank extends BaseStage
 
 	// Cutscenes
 	var cutsceneHandler:CutsceneHandler;
-	var tankman:FlxAnimate;
-	var pico:FlxAnimate;
+	var tankman:PsychFlxAnimate;
+	var pico:PsychFlxAnimate;
 	var boyfriendCutscene:FlxSprite;
 	var audioPlaying:FlxSound;
 	function prepareCutscene()
@@ -144,7 +146,7 @@ class Tank extends BaseStage
 		camHUD.visible = false;
 		//inCutscene = true; //this would stop the camera movement, oops
 
-		tankman = new FlxAnimate(dad.x + 419, dad.y + 225);
+		tankman = new PsychFlxAnimate(dad.x + 419, dad.y + 225);
 		tankman.showPivot = false;
 		Paths.loadAnimateAtlas(tankman, 'cutscenes/tankman');
 		tankman.antialiasing = ClientPrefs.data.antialiasing;
@@ -292,7 +294,7 @@ class Tank extends BaseStage
 		});
 		Paths.sound('stressCutscene');
 
-		pico = new FlxAnimate(gf.x + 150, gf.y + 450);
+		pico = new PsychFlxAnimate(gf.x + 150, gf.y + 450);
 		pico.showPivot = false;
 		Paths.loadAnimateAtlas(pico, 'cutscenes/picoAppears');
 		pico.antialiasing = ClientPrefs.data.antialiasing;

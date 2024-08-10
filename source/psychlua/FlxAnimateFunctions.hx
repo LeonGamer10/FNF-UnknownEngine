@@ -1,6 +1,7 @@
 package psychlua;
 
 import openfl.utils.Assets;
+import flxanimate.PsychFlxAnimate;
 
 #if (LUA_ALLOWED && flxanimate)
 class FlxAnimateFunctions
@@ -25,7 +26,7 @@ class FlxAnimateFunctions
 		});
 
 		Lua_helper.add_callback(lua, "loadAnimateAtlas", function(tag:String, folderOrImg:Dynamic, ?spriteJson:Dynamic = null, ?animationJson:Dynamic = null) {
-			var spr:FlxAnimate = MusicBeatState.getVariables().get(tag);
+			var spr:PsychFlxAnimate = MusicBeatState.getVariables().get(tag);
 			if(spr != null) Paths.loadAnimateAtlas(spr, folderOrImg, spriteJson, animationJson);
 		});
 		

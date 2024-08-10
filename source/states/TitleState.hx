@@ -76,6 +76,10 @@ class TitleState extends MusicBeatState
 		ClientPrefs.loadPrefs();
 		Language.reloadPhrases();
 
+		#if desktop
+		MusicBeatState.windowNameSuffix = "";
+		#end
+
 		super.create();
 
 		curWacky = FlxG.random.getObject(getIntroTextShit());

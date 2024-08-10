@@ -93,5 +93,5 @@ class FramerateCounter extends TextField
 			textColor = 0xFFFF0000;
 	}
 	inline function get_memoryMegas():Float
-		return cast(System.totalMemory, UInt);
+		return cpp.vm.Gc.memInfo64(cpp.vm.Gc.MEM_INFO_USAGE);
 }

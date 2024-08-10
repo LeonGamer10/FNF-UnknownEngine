@@ -121,6 +121,11 @@ class AchievementsMenuState extends MusicBeatState
 		add(nameText);
 		
 		_changeSelection();
+
+		#if desktop
+		MusicBeatState.windowNameSuffix = " - Achievement Menu";
+		#end
+
 		super.create();
 		
 		FlxG.camera.follow(camFollow, null, 0.15);

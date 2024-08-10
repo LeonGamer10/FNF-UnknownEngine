@@ -130,6 +130,11 @@ class LoadingState extends MusicBeatState
 		barWidth = Std.int(bg.width - 10);
 
 		persistentUpdate = true;
+
+		#if desktop
+		MusicBeatState.windowNameSuffix = " - Loading";
+		#end
+
 		super.create();
 	}
 
@@ -173,6 +178,10 @@ class LoadingState extends MusicBeatState
 				dots = '...';
 		}
 		loadingText.text = Language.getPhrase('now_loading', 'Now Loading{1}', [dots]);
+
+		#if desktop
+		MusicBeatState.windowNameSuffix = " - Loading" + dots;
+		#end
 
 		if(!spawnedPessy)
 		{
@@ -332,10 +341,10 @@ class LoadingState extends MusicBeatState
 			//
 
 			// LOAD NOTE SPLASH IMAGE
-			var noteSplash:String = NoteSplash.defaultNoteSplash;
+			var noteSplash:String = NoteSplash.DEFAULT_SKIN;
 			if(PlayState.SONG.splashSkin != null && PlayState.SONG.splashSkin.length > 0) noteSplash = PlayState.SONG.splashSkin;
 			else noteSplash += NoteSplash.getSplashSkinPostfix();
-			imagesToPrepare.push(noteSplash);
+			imagesToPrepare.push("noteSplashes/" + noteSplash);
 
 			try
 			{

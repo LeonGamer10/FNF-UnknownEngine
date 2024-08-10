@@ -83,6 +83,11 @@ class DialogueEditorState extends MusicBeatState implements PsychUIEventHandler.
 		daText.setScale(0.7);
 		add(daText);
 		changeText();
+
+		#if desktop
+		MusicBeatState.windowNameSuffix = " - Dialogue Editor";
+		#end
+
 		super.create();
 	}
 

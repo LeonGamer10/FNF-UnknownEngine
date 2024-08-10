@@ -18,6 +18,7 @@ import flash.media.Sound;
 
 import haxe.Json;
 
+import flxanimate.PsychFlxAnimate;
 
 #if MODS_ALLOWED
 import backend.Mods;
@@ -420,7 +421,7 @@ class Paths
 	#end
 
 	#if flxanimate
-	public static function loadAnimateAtlas(spr:FlxAnimate, folderOrImg:Dynamic, spriteJson:Dynamic = null, animationJson:Dynamic = null)
+	public static function loadAnimateAtlas(spr:PsychFlxAnimate, folderOrImg:Dynamic, spriteJson:Dynamic = null, animationJson:Dynamic = null)
 	{
 		var changedAnimJson = false;
 		var changedAtlasJson = false;

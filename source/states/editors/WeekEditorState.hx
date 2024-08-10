@@ -99,6 +99,10 @@ class WeekEditorState extends MusicBeatState implements PsychUIEventHandler.Psyc
 
 		FlxG.mouse.visible = true;
 
+		#if desktop
+		MusicBeatState.windowNameSuffix = " - Week Editor";
+		#end
+
 		super.create();
 	}
 
